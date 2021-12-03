@@ -22,12 +22,29 @@ CARDCOLORS = (
 )
 
 
+def get_shapes():
+    shapes_db = pygame.image.load("assets\\shapes.png").convert_alpha()
+    width, height = shapes_db.get_size()
+    num_shapes = width // height
+
+    shapelist = []
+
+    for i in range(num_shapes):
+        single_shape = pygame.Surface((height, height))
+        single_shape.blit(shapes_db, (0,0), area=(height*(i+1), 0, height, height))
+        shapelist.append(single_shape)
+    
+    return shapelist
+
+
+
+
 
 class Card:
     def __init__(self, coords: tuple, width: int):
         """ Defines a card object """
         self.width = width # We assume cards are regular squares
-        self.mask_margin = int(width * 0.8)
+        self.mask_margin = int(width * 0.8) # 80% of the card surface
         self.x = coords[0]
         self.y = coords[1]
 
@@ -110,6 +127,7 @@ def main():
 
     dummycircle = Card((64, 64), 128)
 
+    shapelist = get_shapes()
 
     while looping:
         gameclock.tick(FPS)
@@ -127,6 +145,7 @@ def main():
 
         mainscreen.fill((125,125,125))
         dummycircle.game_tick_update(mainscreen, mousepos)
+        mainscreen.blit(shapelist[1], (200,200))
         pygame.display.update()
 
     pygame.quit()
@@ -135,17 +154,7 @@ def main():
 
 
 
-def othertests():
-    a = (1,1)
-    b = (34, 47)
-    c = (1, 1080)
-
-    print("a < b < c =", a < b < c)
-    print("a < b =", a < b)
-    print("b < c =", b < c)
-
 
 
 if __name__ == "__main__":
     main()
-    #othertests()
