@@ -22,18 +22,21 @@ CARDCOLORS = (
 )
 
 
-def get_shapes():
-    shapes_db = pygame.image.load("assets\\shapes.png").convert_alpha()
-    width, height = shapes_db.get_size()
-    num_shapes = width // height
 
+
+def get_shapes(spritesheet: pygame.Surface) -> list:
+    """ Returns a list of shape sprites """
+    width, height = spritesheet.get_size()
+    num_shapes = width // height
+    
     shapelist = []
 
     for i in range(num_shapes):
-        single_shape = pygame.Surface((height, height))
-        single_shape.blit(shapes_db, (0,0), area=(height*(i+1), 0, height, height))
+        single_shape = pygame.Surface((height, height)).convert_alpha()
+        single_shape.set_colorkey(BLACK)
+        single_shape.blit(spritesheet, (0,0), area=(height*i, 0, height, height))
         shapelist.append(single_shape)
-    
+
     return shapelist
 
 
@@ -41,14 +44,14 @@ def get_shapes():
 
 
 class Card:
-    def __init__(self, coords: tuple, width: int):
+    def __init__(self, coords: tuple, width: int, shape_sprite: pygame.Surface):
         """ Defines a card object """
         self.width = width # We assume cards are regular squares
         self.mask_margin = int(width * 0.8) # 80% of the card surface
         self.x = coords[0]
         self.y = coords[1]
 
-        self.card_face = pygame.image.load("assets\\MemoryCardFrontMask.png")
+        self.card_face = shape_sprite
         self.card_face = pygame.transform.scale(self.card_face, (self.width, self.width))
         self.card_back = pygame.image.load("assets\\MemoryCardBackBorderless.png")
         self.card_back = pygame.transform.scale(self.card_back, (self.width, self.width))
@@ -101,6 +104,7 @@ class Card:
             color_surface.fill(CARDCOLORS[1])
         
         side_to_blit = pygame.transform.scale(side_to_blit, (currentwidth,self.width))
+        side_to_blit.set_colorkey(BLACK)
         
         self.animation_counter += self.increment
         # Checking if animation is over
@@ -109,6 +113,7 @@ class Card:
         
         final_x = self.x - currentwidth//2
         final_y = self.y - self.width//2
+
         if color_surface:
             window.blit(color_surface, (final_x, self.y - self.mask_margin//2))
         window.blit(side_to_blit, (final_x, final_y))
@@ -125,9 +130,12 @@ def main():
     gameclock = pygame.time.Clock()
     looping = True
 
-    dummycircle = Card((64, 64), 128)
+    shapes_db = pygame.image.load("assets\\spritesheettestblue.png").convert_alpha()
+    SHAPELIST = get_shapes(shapes_db)
 
-    shapelist = get_shapes()
+    dummycircle = Card((64, 64), 128, SHAPELIST[4])
+    dummycard = Card((200,200), 64, SHAPELIST[5])
+
 
     while looping:
         gameclock.tick(FPS)
@@ -140,12 +148,14 @@ def main():
                 mousepos = pygame.mouse.get_pos()
                 if dummycircle.mouseover(mousepos):
                     dummycircle.card_flip()
+                if dummycard.mouseover(mousepos):
+                    dummycard.card_flip()
         
 
 
         mainscreen.fill((125,125,125))
         dummycircle.game_tick_update(mainscreen, mousepos)
-        mainscreen.blit(shapelist[1], (200,200))
+        dummycard.game_tick_update(mainscreen, mousepos)
         pygame.display.update()
 
     pygame.quit()
