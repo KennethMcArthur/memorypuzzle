@@ -57,7 +57,7 @@ class Card:
         self.card_back = pygame.transform.scale(self.card_back, (self.width, self.width))
 
         self.animation_counter = 0 # 0 face down card, self.width*2 face up card
-        self.animation_speed = 5
+        self.animation_speed = self.width // 10
         self.increment = 0
 
 
