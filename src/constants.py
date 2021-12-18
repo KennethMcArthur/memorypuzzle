@@ -41,7 +41,7 @@ def _get_shapes(spritesheet: pygame.Surface) -> list:
 
 
 # GAME CONSTANTS
-MAINSCREEN = pygame.display.set_mode((300, 300))#, flags=pygame.SCALED, vsync=1)
+MAINSCREEN = pygame.display.set_mode((1024, 768))#, flags=pygame.SCALED, vsync=1)
 
 _ASSETS_DIR = "assets"
 _EVERY_SHAPE = load_image(_ASSETS_DIR, "spritesheettestblue.png").convert_alpha()

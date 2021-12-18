@@ -28,7 +28,7 @@ def main_program():
 
 
     while looping:
-        gameclock.tick(CST.FPS)
+        delta = gameclock.tick(CST.FPS)
         mousepos = None
 
         for event in pygame.event.get():
@@ -45,7 +45,7 @@ def main_program():
         mainscreen.fill((125,125,125))
 
         for singlecard in cardlist:
-            singlecard.game_tick_update(mainscreen, mousepos)
+            singlecard.game_tick_update(mainscreen, mousepos, delta)
         
         pygame.display.update()
 
@@ -56,8 +56,27 @@ def main_program():
 
 
 
+def main_game():
 
+    window = CST.MAINSCREEN
 
+    # Scene initialization
+    gamemenu = None
+    gamelevel = None
+    gameendscreen = None
+
+    scenelist = [
+        gamemenu,
+        gamelevel,
+        gameendscreen,
+    ]
+
+    next_scene = 0
+    while next_scene != None:
+        next_scene = scenelist[next_scene].run()
+    
+    pygame.quit()
+    sys.exit()
 
 
 

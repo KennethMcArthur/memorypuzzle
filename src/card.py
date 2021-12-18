@@ -1,7 +1,7 @@
 # MEMORY PUZZLE: CARD OBJECT
 
 import pygame
-#
+
 
 
 
@@ -60,7 +60,7 @@ class Card:
         return self.card_shape == other.card_shape and self.card_color == other.card_color
 
 
-    def game_tick_update(self, window: pygame.Surface, mousepos: tuple) -> None:
+    def game_tick_update(self, window: pygame.Surface, mousepos: tuple, delta: float) -> None:
         """ Updates the object each frame """
         side_to_blit = None
         color_surface = None
@@ -125,7 +125,7 @@ def main_tests():
     print("The two cards have the same color and shape: ", dummybigcard == dummycard)
 
     while looping:
-        gameclock.tick(CST.FPS)
+        delta = gameclock.tick(CST.FPS)
         mousepos = None
 
         for event in pygame.event.get():
@@ -140,8 +140,8 @@ def main_tests():
         
 
         mainscreen.fill((125,125,125))
-        dummybigcard.game_tick_update(mainscreen, mousepos)
-        dummycard.game_tick_update(mainscreen, mousepos)
+        dummybigcard.game_tick_update(mainscreen, mousepos, delta)
+        dummycard.game_tick_update(mainscreen, mousepos, delta)
         pygame.display.update()
 
 
