@@ -3,7 +3,7 @@
 
 
 import pygame
-
+pygame.font.init()
 
 
 
@@ -25,6 +25,8 @@ class Button:
         self.button_border_radius = min(self.button_rect.width, self.button_rect.height) // 4
         self.func_to_call = func_to_call
         self.func_parameters = func_parameters
+        self.font_surf = pygame.font.Font(self.style["button_font"], 18)
+
 
 
     def _check_if_mouse_over(self, mousepos: tuple) -> bool:
@@ -57,4 +59,5 @@ class Button:
 
         # TODO: add font render
         pygame.draw.rect(window, actual_color, self.button_rect, border_radius=self.button_border_radius)
+        surf_to_blit = self.font_surf.render(self.label, False, (0,255,0))
         window.blit(surf_to_blit, (self.button_rect.x, self.button_rect.y))

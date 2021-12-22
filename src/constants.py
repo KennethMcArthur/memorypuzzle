@@ -66,4 +66,4 @@ SHAPELIST = _get_shapes(_EVERY_SHAPE)
 
 BUTTON_STYLE = {"button_color": (220, 0, 0),
                 "button_color_hover": (255, 0, 0),
-                "button_font": "arial"}
+                "button_font": None}
