@@ -50,6 +50,10 @@ CARD_BACK = load_image(_ASSETS_DIR, "MemoryCardBackBorderless.png").convert_alph
 
 FPS = 60
 
+class SCENES:
+    GAMEMENU = 0
+
+
 CARDCOLORS = (
     (255, 0, 0), # RED
     (0, 255, 0), # GREEN
@@ -58,3 +62,8 @@ CARDCOLORS = (
 )
 
 SHAPELIST = _get_shapes(_EVERY_SHAPE)
+
+
+BUTTON_STYLE = {"button_color": (220, 0, 0),
+                "button_color_hover": (255, 0, 0),
+                "button_font": "arial"}
