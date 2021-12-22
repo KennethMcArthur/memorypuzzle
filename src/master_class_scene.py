@@ -2,7 +2,6 @@
 # This class implements the basic methods for running a scene
 
 
-
 import pygame, sys
 import constants as CST
 
@@ -10,20 +9,11 @@ import constants as CST
 
 class Scene:
     def __init__(self, GAME_WINDOW: pygame.Surface) -> None:
-        """ Inizalization phase, always call the super().__init__ at the end of an overridden __init__ """
+        """ Inizalization phase, always call the super().__init__ at the beginning of an overridden __init__ """
         self.GAME_WINDOW = GAME_WINDOW
         self.looping_active = True
         self.updatelist = []
         self.game_timer_step = 1 # Every X seconds
-        self.scene_related_init()
-
-
-    def scene_related_init(self):
-        """ To be overridden by each object to define their working variables
-            Already defined in __init__:
-            self.GAME_WINDOW: pygame.Surface
-            self.updatelist: list """
-        pass
 
 
     def event_checking(self, this_event: pygame.event) -> None:
@@ -31,11 +21,6 @@ class Scene:
         if this_event.type == pygame.QUIT: # Handling of quit event
             pygame.quit()
             sys.exit() # ensures we quit game AND program
-
-
-    def keys_to_check(self, key_list: list) -> None:
-        """ Overridable to check different keys pressed """
-        pass
 
 
     def set_timer_step(self, seconds: int):
@@ -87,16 +72,12 @@ class Scene:
 
             for event in pygame.event.get():
                 self.event_checking(event)
-                    
-            # Key state capturing
-            keys_pressed = pygame.key.get_pressed() # Gets the bool state of all keyboard buttons
 
-            # Key press checking
-            self.keys_to_check(keys_pressed)
+            cursor_pos = pygame.mouse.get_pos()
 
             # Drawing sequence
             for gameobj in self.updatelist:
-                gameobj.game_tick_update(self.GAME_WINDOW) # All classes have this methods
+                gameobj.game_tick_update(self.GAME_WINDOW, cursor_pos, delta) # All classes have this methods
             pygame.display.update()
 
             # Game timer, used by scenes as they want                
