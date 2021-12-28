@@ -16,7 +16,8 @@ class GameMenu(Scene):
 
     	# Scene Elements
 		background = bg.Background()
-		start_button = Button("Quit", CST.BUTTON_STYLE, (200,200,100,50), self.quit_loop, CST.SCENES.GAMEMENU)
+		self.next_scene_params = {"next_scene": CST.SCENES.GAMEMENU,}
+		start_button = Button("Quit", CST.BUTTON_STYLE, (200,200,100,50), self.quit_loop, self.next_scene_params)
 
     	# Append order is draw order
 		self.updatelist.append(background)
@@ -41,5 +42,5 @@ if __name__ == "__main__":
 
 	test_menu = GameMenu(CST.MAINSCREEN)
 
-	next_scene = test_menu.run()
-	print("Next scene:", next_scene)
+	next_scene_params = test_menu.run()
+	print("Next scene:", next_scene_params["next_scene"])

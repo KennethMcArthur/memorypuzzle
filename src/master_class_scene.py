@@ -33,9 +33,15 @@ class Scene:
         pass
 
 
-    def quit_loop(self, data_to_return: int) -> None:
+    def quit_loop(self, data_to_return: dict) -> None:
         """ Method to exit from the run() loop that tells it what to return """
         self.looping_active = False
+
+        KEY_NEEDED = ["next_scene",]
+        # Validating style dict keys
+        if not all(key in KEY_NEEDED for key in data_to_return):
+            raise KeyError("Missing needed dictionary key")
+
         self.scene_return_data = data_to_return
 
 
