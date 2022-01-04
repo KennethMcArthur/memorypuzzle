@@ -60,8 +60,14 @@ class Scene:
         pass
 
 
-    def run(self) -> int:
+    def load_outside_params(self, params: dict) -> None:
+        """ Loads a dictionary of parameters from another scene """
+        pass
+
+
+    def run(self, outside_params: dict) -> int:
         """ Main loop method """
+        self.load_outside_params(outside_params)
         self.load_and_start_music() # Starting music only when Scene is active
         self.text_to_update()
         

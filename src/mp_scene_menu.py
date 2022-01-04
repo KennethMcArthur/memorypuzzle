@@ -42,5 +42,6 @@ if __name__ == "__main__":
 
 	test_menu = GameMenu(CST.MAINSCREEN)
 
-	next_scene_params = test_menu.run()
+	next_scene_params = {"next_scene": 0,}
+	next_scene_params = test_menu.run(next_scene_params)
 	print("Next scene:", next_scene_params["next_scene"])

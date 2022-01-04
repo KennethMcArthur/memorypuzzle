@@ -26,9 +26,9 @@ def main_game():
         gameendscreen,
     ]
 
-    next_scene_params = {"next_scene": 0,}
-    while next_scene_params["next_scene"] != None:
-        next_scene_params = scenelist[next_scene_params["next_scene"]].run()
+    scene_params = {"next_scene": 0,}
+    while scene_params["next_scene"] != None:
+        scene_params = scenelist[scene_params["next_scene"]].run(scene_params)
     
     pygame.quit()
     sys.exit()
