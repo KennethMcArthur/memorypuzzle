@@ -88,7 +88,7 @@ if __name__ == "__main__":
 
     dummyboard = Board(16, 5)
     dummyboard.generate_cards_positions(4, 4,  30)
-    
+
 
     while looping:
         delta = gameclock.tick(CST.FPS)
@@ -97,7 +97,11 @@ if __name__ == "__main__":
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 looping = False
-        
+            if event.type == pygame.MOUSEBUTTONUP:
+                for card in dummyboard.card_list:
+                    if card.mouseover(mousepos):
+                        card.card_flip()
+
 
         mainscreen.fill((125,125,125))
         dummyboard.game_tick_update(mainscreen, mousepos, delta)
