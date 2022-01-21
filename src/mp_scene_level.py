@@ -23,8 +23,8 @@ class Gamelevel(Scene):
     
     
 	def load_outside_params(self, params: dict) -> None:
-        """ Loads a dictionary of parameters from another scene """
-        pass
+		""" Loads a dictionary of parameters from another scene """
+		pass
 
 
 

@@ -27,6 +27,8 @@ class Card:
         self.animation_speed = self.width // 10
         self.increment = 0
 
+        self.card_blocked = False
+
 
     def animate_face_up(self) -> None:
         """ Starts the animation forcing to flip the card face up """
@@ -40,6 +42,8 @@ class Card:
 
     def card_flip(self) -> None:
         """ Starts the animation based on current state """
+        if self.card_blocked:
+            return
         if self.animation_counter <= 0: # Card is face down
             self.increment = self.animation_speed
         elif self.animation_counter >= self.width * 2: # Card is face up

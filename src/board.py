@@ -34,6 +34,23 @@ class Board:
         return row_length
 
 
+    def get_combinations(self, total_cards: int) -> list:
+        """ Returns a list of every needed combination of (seed, color) """
+        total_card_couples = total_cards // 2
+        seeds_needed = total_card_couples // len(CST.CARDCOLORS) +1 # Using every color possible first
+        
+        total_comb = []
+
+        for seed_index in range(seeds_needed):
+            for color in CST.CARDCOLORS:
+                total_comb.append((CST.SHAPELIST[seed_index], color))
+                total_comb.append((CST.SHAPELIST[seed_index], color))
+            
+
+        return total_comb[:total_cards]
+        
+
+
     def generate_cards_positions(self, rows: int, row_length: int, padding: int) -> list:
         """ Places each cards at their coordinates """
         game_field_width = min(CST.SCREEN_WIDTH, CST.SCREEN_HEIGHT)
@@ -52,10 +69,14 @@ class Board:
                 coords_list.append(this_coord)
         
         
+        seed_and_color = self.get_combinations(rows * row_length)
+        
         # Placing cards
         self.card_list = []
+        i = 0
         for pos in coords_list:
-            self.card_list.append(Card(pos, card_size,CST.SHAPELIST[4], CST.CARDCOLORS[0], CST.CARD_BACK))
+            self.card_list.append(Card(pos, card_size, *seed_and_color[i], CST.CARD_BACK))
+            i += 1
 
         
 
@@ -89,6 +110,9 @@ if __name__ == "__main__":
     dummyboard = Board(16, 5)
     dummyboard.generate_cards_positions(4, 4,  30)
 
+    print(len(dummyboard.get_combinations(16)))
+
+    selected_cards = []
 
     while looping:
         delta = gameclock.tick(CST.FPS)
@@ -100,7 +124,20 @@ if __name__ == "__main__":
             if event.type == pygame.MOUSEBUTTONUP:
                 for card in dummyboard.card_list:
                     if card.mouseover(mousepos):
-                        card.card_flip()
+                        if len(selected_cards) < 2:
+                            card.card_flip()
+                            selected_cards.append(card)
+
+        # Card checking
+        if len(selected_cards) == 2:
+            if selected_cards[0] == selected_cards[1]:
+                selected_cards[0].card_blocked = True
+                selected_cards[1].card_blocked = True
+                selected_cards.clear()
+            else:
+                selected_cards[0].card_flip()
+                selected_cards[1].card_flip()
+                selected_cards.clear()
 
 
         mainscreen.fill((125,125,125))
