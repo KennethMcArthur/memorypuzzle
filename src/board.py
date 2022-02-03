@@ -18,7 +18,7 @@ class Board:
         self.total_cards = num_cards
         self.card_row_length = self.rowify(num_cards)
         self.card_rows = num_cards // self.card_row_length
-
+        self.card_list = []
         #self.card_pos = self.generate_cards_positions(self.card_rows, self.card_row_length, padding)
 
 
@@ -72,13 +72,27 @@ class Board:
         seed_and_color = self.get_combinations(rows * row_length)
         
         # Placing cards
-        self.card_list = []
         i = 0
         for pos in coords_list:
             self.card_list.append(Card(pos, card_size, *seed_and_color[i], CST.CARD_BACK))
             i += 1
 
+
+    def card_clicked_at(self, coords: tuple) -> Card:
+        """ Returns the card at the clicked point, or None if no card was there """
+        # Checking if the mouse is over a card
+        clicked_card = None
+        for card in self.card_list:
+            if card.mouseover(coords):
+                clicked_card = card
+                break
         
+        # Checking if rthe card is clickable (not yet selected)
+        if clicked_card is not None and clicked_card.is_selectable():
+            return clicked_card
+
+        return None
+
 
     def game_tick_update(self, window: pygame.Surface, mousepos: tuple, delta: float) -> None:
         for card in self.card_list:
@@ -117,27 +131,29 @@ if __name__ == "__main__":
     while looping:
         delta = gameclock.tick(CST.FPS)
         mousepos = pygame.mouse.get_pos()
-
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 looping = False
             if event.type == pygame.MOUSEBUTTONUP:
-                for card in dummyboard.card_list:
-                    if card.mouseover(mousepos):
-                        if len(selected_cards) < 2:
-                            card.card_flip()
-                            selected_cards.append(card)
+                if len(selected_cards) < 2:
+                    this_card = dummyboard.card_clicked_at(mousepos)
+                    if this_card:
+                        this_card.card_flip()
+                        selected_cards.append(this_card)
+
 
         # Card checking
-        if len(selected_cards) == 2:
+        if len(selected_cards) == 2 and all(card.is_animation_over() for card in selected_cards):
             if selected_cards[0] == selected_cards[1]:
+                print("same card!")
                 selected_cards[0].card_blocked = True
                 selected_cards[1].card_blocked = True
-                selected_cards.clear()
             else:
+                print("Cards are not the same")
+                #pygame.time.wait(2000)
                 selected_cards[0].card_flip()
                 selected_cards[1].card_flip()
-                selected_cards.clear()
+            selected_cards.clear()
 
 
         mainscreen.fill((125,125,125))
