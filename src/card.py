@@ -49,13 +49,20 @@ class Card:
         elif self.animation_counter >= self.width * 2: # Card is face up
             self.increment = -self.animation_speed
 
+
     def is_selectable(self) -> bool:
         """ Returns of the card is not blocked or yet to be selected """
         return not self.card_blocked and self.animation_counter <= 0
 
+
     def is_animation_over(self) -> bool:
         """ Used to check if any animation is over """
-        return self.increment == 0
+        return self.animation_counter <= 0 or self.animation_counter >= self.width*2
+
+
+    def is_fully_flipped(self) -> bool:
+        return self.increment == 0 and self.is_animation_over()
+
 
     def mouseover(self, current_mouse_pos: tuple) -> bool:
         """ Returns whether or not the mouse is inside this card area """
@@ -93,7 +100,7 @@ class Card:
         
         self.animation_counter += self.increment
         # Checking if animation is over
-        if self.animation_counter <= 0 or self.animation_counter >= self.width*2:
+        if self.is_animation_over():
             self.increment = 0
         
         final_x = self.x - currentwidth//2
