@@ -143,22 +143,24 @@ if __name__ == "__main__":
 
 
         # Card checking
-        if len(selected_cards) == 2 and all(card.is_animation_over() for card in selected_cards):
+        need_wrong_answer_delay = False
+        if len(selected_cards) == 2 and all(card.is_fully_flipped() for card in selected_cards):
             if selected_cards[0] == selected_cards[1]:
-                print("same card!")
                 selected_cards[0].card_blocked = True
                 selected_cards[1].card_blocked = True
             else:
-                print("Cards are not the same")
-                #pygame.time.wait(2000)
+                need_wrong_answer_delay = True
                 selected_cards[0].card_flip()
-                selected_cards[1].card_flip()
+                selected_cards[1].card_flip()                
             selected_cards.clear()
 
 
         mainscreen.fill((125,125,125))
         dummyboard.game_tick_update(mainscreen, mousepos, delta)
         pygame.display.update()
+
+        if need_wrong_answer_delay:
+            pygame.time.wait(1500)
 
 
     pygame.quit()
