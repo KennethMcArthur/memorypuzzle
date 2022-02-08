@@ -127,40 +127,50 @@ if __name__ == "__main__":
     print(len(dummyboard.get_combinations(16)))
 
     selected_cards = []
+    need_wrong_answer_delay = False
+    got_wrong_pair = False
 
     while looping:
         delta = gameclock.tick(CST.FPS)
         mousepos = pygame.mouse.get_pos()
+
+        if got_wrong_pair:
+            if all(card.is_fully_flipped() for card in selected_cards):
+                selected_cards.clear()
+                got_wrong_pair = False
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 looping = False
             if event.type == pygame.MOUSEBUTTONUP:
-                if len(selected_cards) < 2:
+                if len(selected_cards) < 2 and not got_wrong_pair:
                     this_card = dummyboard.card_clicked_at(mousepos)
                     if this_card:
                         this_card.card_flip()
                         selected_cards.append(this_card)
 
-
-        # Card checking
-        need_wrong_answer_delay = False
+        # Card checking        
         if len(selected_cards) == 2 and all(card.is_fully_flipped() for card in selected_cards):
             if selected_cards[0] == selected_cards[1]:
                 selected_cards[0].card_blocked = True
                 selected_cards[1].card_blocked = True
+                selected_cards.clear()
             else:
                 need_wrong_answer_delay = True
+                got_wrong_pair = True
                 selected_cards[0].card_flip()
-                selected_cards[1].card_flip()                
-            selected_cards.clear()
-
+                selected_cards[1].card_flip()
 
         mainscreen.fill((125,125,125))
         dummyboard.game_tick_update(mainscreen, mousepos, delta)
         pygame.display.update()
 
         if need_wrong_answer_delay:
-            pygame.time.wait(1500)
+            pygame.time.wait(1000)
+            need_wrong_answer_delay = False
+
+
+
 
 
     pygame.quit()
