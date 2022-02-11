@@ -13,6 +13,9 @@ import mp_background as bg
 
 
 class Gamelevel(Scene):
+
+	PARAMS_NEEDED = ["total_cards"]
+
 	def __init__(self, GAME_WINDOW: pygame.Surface) -> None:
 		super().__init__(GAME_WINDOW)
 
@@ -26,7 +29,11 @@ class Gamelevel(Scene):
     
 	def load_outside_params(self, params: dict) -> None:
 		""" Loads a dictionary of parameters from another scene """
-		total_cards = 16
+		# Validating parameter dict keys
+		if not all(key in params for key in Gamelevel.PARAMS_NEEDED):
+			raise KeyError("Missing key parameter")
+
+		total_cards = params["total_cards"]
 		board_row_length = board.rowify(total_cards)
 		board_row_number = total_cards // board_row_length
 		seed_color_pairs = board.get_combinations(total_cards, CST.CARDCOLORS, CST.SHAPELIST)
@@ -77,7 +84,6 @@ class Gamelevel(Scene):
 					selected_cards[0].card_flip()
 					selected_cards[1].card_flip()
 
-
             # Drawing sequence
 			for gameobj in self.updatelist:
 				gameobj.game_tick_update(self.GAME_WINDOW, mousepos, delta) # All classes have this methods
@@ -100,6 +106,6 @@ if __name__ == "__main__":
 
 	test_menu = Gamelevel(CST.MAINSCREEN)
 
-	next_scene_params = {"next_scene": 0,}
+	next_scene_params = {"next_scene": 0, "total_cards": 16}
 	next_scene_params = test_menu.run(next_scene_params)
 	print("Next scene:", next_scene_params["next_scene"])
