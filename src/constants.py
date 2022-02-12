@@ -47,12 +47,14 @@ MAINSCREEN = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))#, flags=pyga
 _ASSETS_DIR = "assets"
 _EVERY_SHAPE = load_image(_ASSETS_DIR, "spritesheettestblue.png").convert_alpha()
 CARD_BACK = load_image(_ASSETS_DIR, "MemoryCardBackBorderless.png").convert_alpha()
-
+TITLE_FONT = os.path.join(_ASSETS_DIR, "kongtext.ttf") # Font by codeman38 | cody@zone38.net | http://www.zone38.net/
+TEXT_COLOR = (255,255,255) # White
 
 FPS = 60
 
 class SCENES:
     GAMEMENU = 0
+    GAMELEVEL = 1
 
 
 CARDCOLORS = (
@@ -67,4 +69,4 @@ SHAPELIST = _get_shapes(_EVERY_SHAPE)
 
 BUTTON_STYLE = {"button_color": (220, 0, 0),
                 "button_color_hover": (255, 0, 0),
-                "button_font": None}
+                "button_font": TITLE_FONT}
