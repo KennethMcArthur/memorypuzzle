@@ -5,6 +5,7 @@ import pygame
 import constants as CST
 from master_class_scene import Scene
 from master_class_button import Button
+from master_class_text import StaticText
 import mp_background as bg
 
 
@@ -15,13 +16,43 @@ class GameMenu(Scene):
 		super().__init__(GAME_WINDOW)
 
     	# Scene Elements
-		background = bg.Background()
+		HALF_SCREEN = CST.SCREEN_WIDTH//2
+		ONETHIRD_SCREEN = CST.SCREEN_WIDTH//3
+		FIRST_ROW = 100
+		SECOND_ROW = 300
+		THIRD_ROW = 400
+		FOURTH_ROW = 600
+		GRID = {
+			"title": (HALF_SCREEN, FIRST_ROW),
+			"b_size_label": (HALF_SCREEN, SECOND_ROW),
+			"minus_button": (ONETHIRD_SCREEN-25, THIRD_ROW-25, 50, 50),
+			"b_value": (HALF_SCREEN, THIRD_ROW),
+			"plus_button": (ONETHIRD_SCREEN*2-25, THIRD_ROW-25, 50, 50),
+			"start_button": (HALF_SCREEN-ONETHIRD_SCREEN//2, FOURTH_ROW, ONETHIRD_SCREEN, ONETHIRD_SCREEN//4),
+			"quit_button": (),
+		}
+
+		self.BOARD_SIZES = [8, 12, 16, 24, 36]
+		self.board_size_index = 0
 		self.next_scene_params = {"next_scene": CST.SCENES.GAMEMENU,}
-		start_button = Button("Quit", CST.BUTTON_STYLE, (200,200,100,50), self.quit_loop, self.next_scene_params)
+		background = bg.Background()
+		big_title = StaticText("Memory Puzzle", 64, GRID["title"], alignment=StaticText.CENTER)
+		board_size_label = StaticText("Choose board size", 32, GRID["b_size_label"], alignment=StaticText.CENTER)
+		self.board_size_value_label = StaticText(str(self.BOARD_SIZES[self.board_size_index]), 64, GRID["b_value"], alignment=StaticText.CENTER)
+		start_button = Button("Start", CST.BUTTON_STYLE, GRID["start_button"], self.button_start)
+		plus_button = Button("+", CST.BUTTON_STYLE, GRID["plus_button"], self.button_plus)
+		minus_button = Button("-", CST.BUTTON_STYLE, GRID["minus_button"], self.button_minus)
+		quit_button = Button("Quit", CST.BUTTON_STYLE, (200,200,100,50), self.quit_loop, self.next_scene_params)
 
     	# Append order is draw order
 		self.updatelist.append(background)
+		self.updatelist.append(big_title)
+		self.updatelist.append(plus_button)
+		self.updatelist.append(minus_button)
+		self.updatelist.append(board_size_label)
+		self.updatelist.append(self.board_size_value_label)
 		self.updatelist.append(start_button)
+		self.updatelist.append(quit_button)
 
 
 	def event_checking(self, this_event: pygame.event) -> None:
@@ -33,6 +64,25 @@ class GameMenu(Scene):
 				if isinstance(element, Button):
 					element.mouse_clicked(this_event.pos)
 
+	# Buttons methods
+	def button_start(self):
+		new_next_scene_params = {
+			"next_scene": CST.SCENES.GAMELEVEL,
+			"total_cards": self.BOARD_SIZES[self.board_size_index],
+		}
+		self.quit_loop(new_next_scene_params)
+
+	def button_plus(self):
+		self.board_size_index += 1
+		if self.board_size_index >= len(self.BOARD_SIZES):
+			self.board_size_index = 0
+		self.board_size_value_label.set_text(str(self.BOARD_SIZES[self.board_size_index]))
+
+	def button_minus(self):
+		self.board_size_index -= 1
+		if self.board_size_index < 0:
+			self.board_size_index = len(self.BOARD_SIZES)-1
+		self.board_size_value_label.set_text(str(self.BOARD_SIZES[self.board_size_index]))
 
 
 
@@ -44,4 +94,4 @@ if __name__ == "__main__":
 
 	next_scene_params = {"next_scene": 0,}
 	next_scene_params = test_menu.run(next_scene_params)
-	print("Next scene:", next_scene_params["next_scene"])
+	print("Next scene params:", next_scene_params)
