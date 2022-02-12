@@ -2,9 +2,10 @@
 
 
 import pygame, sys
+sys.path.append("src")
 from src import constants as CST
-from src import board
-from src import card
+from src import mp_scene_menu
+from src import mp_scene_level
 
 
 pygame.init()
@@ -13,11 +14,11 @@ pygame.init()
 
 def main_game():
 
-    window = CST.MAINSCREEN
+    GAMEWINDOW = CST.MAINSCREEN
 
     # Scene initialization
-    gamemenu = None
-    gamelevel = None
+    gamemenu = mp_scene_menu.GameMenu(GAMEWINDOW)
+    gamelevel = mp_scene_level.Gamelevel(GAMEWINDOW)
     gameendscreen = None
 
     scenelist = [
