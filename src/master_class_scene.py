@@ -39,7 +39,7 @@ class Scene:
 
         KEY_NEEDED = ["next_scene",]
         # Validating style dict keys
-        if not all(key in KEY_NEEDED for key in data_to_return):
+        if not all(key in data_to_return for key in KEY_NEEDED):
             raise KeyError("Missing needed dictionary key")
 
         self.scene_return_data = data_to_return
