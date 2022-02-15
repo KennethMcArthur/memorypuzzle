@@ -38,8 +38,6 @@ def _get_shapes(spritesheet: pygame.Surface) -> list:
 
 
 
-
-
 # GAME CONSTANTS
 SCREEN_WIDTH, SCREEN_HEIGHT = 1024, 768
 MAINSCREEN = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))#, flags=pygame.SCALED, vsync=1)
@@ -70,3 +68,21 @@ SHAPELIST = _get_shapes(_EVERY_SHAPE)
 BUTTON_STYLE = {"button_color": (220, 0, 0),
                 "button_color_hover": (255, 0, 0),
                 "button_font": TITLE_FONT}
+
+
+BOARD_SIZE = {
+    4: 2,
+    8: 4,
+    12: 4,
+    16: 4,
+    20: 4,
+    24: 4,
+    30: 5,
+    36: 6,
+}
+
+# Cheating by modifying a constant: this must be changed, it's a shame
+max_combinations = len(CARDCOLORS) * len(SHAPELIST)
+for size in BOARD_SIZE.copy():
+    if size > max_combinations:
+        BOARD_SIZE.pop(size)
