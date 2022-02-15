@@ -32,7 +32,7 @@ class GameMenu(Scene):
 			"quit_button": (),
 		}
 
-		self.BOARD_SIZES = [8, 12, 16, 24, 36]
+		self.BOARD_SIZES = list(CST.BOARD_SIZE.keys())
 		self.board_size_index = 0
 		self.next_scene_params = {"next_scene": CST.SCENES.GAMEMENU,}
 		background = bg.Background()
