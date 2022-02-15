@@ -10,18 +10,6 @@ from card import Card
 
 
 
-def rowify(card_total: int) -> int:
-    """ Splits the number of cards into equal rows """
-    row_length = int(sqrt(card_total))
-    
-    for i in range(row_length, 0, -1):
-        if card_total % i == 0:
-            row_length = i
-            break
-
-    return row_length
-
-
 def get_combinations(total_cards: int, colors_db: list, shape_db: list) -> list:
     """ Returns a list of every needed combination of (seed, color) """
     total_card_couples = total_cards // 2
@@ -40,16 +28,16 @@ def get_combinations(total_cards: int, colors_db: list, shape_db: list) -> list:
 
 def generate_cards_on_board(rows: int, row_length: int, padding: int, seed_color_pairs: list) -> list:
     """ Places each cards at their coordinates """
-    game_field_width = min(CST.SCREEN_WIDTH, CST.SCREEN_HEIGHT)
-    card_size = (game_field_width - padding * (row_length + 1)) // row_length
+    card_size = (CST.SCREEN_HEIGHT - padding * (row_length + 1)) // row_length
 
     screen_center = (CST.SCREEN_WIDTH//2, CST.SCREEN_HEIGHT//2)
-    board_size = card_size * row_length + padding * (row_length-1)
-    origin_point = (screen_center[0] - board_size // 2 + card_size // 2,
-                    screen_center[1] - board_size // 2 + card_size // 2)
+    board_width = card_size * row_length + padding * (row_length-1)
+    board_height = card_size * rows + padding * (rows-1)
+    origin_point = (screen_center[0] - board_width // 2 + card_size // 2,
+                    screen_center[1] - board_height // 2 + card_size // 2)
 
     coords_list = []
-    for row in range(row_length):
+    for row in range(rows):
         for col in range(row_length):
             this_coord = (origin_point[0] + (card_size + padding)*col,
                             origin_point[1] + (card_size + padding)*row)
@@ -59,6 +47,7 @@ def generate_cards_on_board(rows: int, row_length: int, padding: int, seed_color
     # Placing cards in the output list
     final_card_list = []
     i = 0
+    print(len(seed_color_pairs))
     for pos in coords_list:
         final_card_list.append(Card(pos, card_size, *seed_color_pairs[i], CST.CARD_BACK))
         i += 1
@@ -105,11 +94,11 @@ if __name__ == "__main__":
 
 
     total_cards = 16
-    board_row_length = rowify(total_cards)
+    board_row_length = CST.BOARD_SIZE.get(total_cards)
     board_row_number = total_cards // board_row_length
     seed_color_pairs = get_combinations(total_cards, CST.CARDCOLORS, CST.SHAPELIST)
     random.shuffle(seed_color_pairs)
-    card_list = generate_cards_on_board(board_row_number, board_row_length,  30, seed_color_pairs)
+    card_list = generate_cards_on_board(board_row_number, board_row_length, 30, seed_color_pairs)
 
 
     selected_cards = []
