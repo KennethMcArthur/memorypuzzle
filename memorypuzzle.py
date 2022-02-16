@@ -6,6 +6,7 @@ sys.path.append("src")
 from src import constants as CST
 from src import mp_scene_menu
 from src import mp_scene_level
+from src import mp_scene_end
 
 
 pygame.init()
@@ -19,7 +20,7 @@ def main_game():
     # Scene initialization
     gamemenu = mp_scene_menu.GameMenu(GAMEWINDOW)
     gamelevel = mp_scene_level.Gamelevel(GAMEWINDOW)
-    gameendscreen = None
+    gameendscreen = mp_scene_end.GameEnd(GAMEWINDOW)
 
     scenelist = [
         gamemenu,
