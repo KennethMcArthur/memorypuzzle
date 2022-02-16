@@ -18,8 +18,6 @@ def load_image(asset_folder: str, filename: str) -> pygame.Surface:
         print("Cannot load image:", filename)
         raise SystemExit(message)
 
-
-
 def _get_shapes(spritesheet: pygame.Surface) -> list:
     """ Returns a list of shape sprites """
     width, height = spritesheet.get_size()
@@ -34,6 +32,27 @@ def _get_shapes(spritesheet: pygame.Surface) -> list:
         shapelist.append(single_shape)
 
     return shapelist
+
+def _get_board_sizes(colors : list, shapes: list) -> dict:
+    """ Builds the board size constant, based on current possible combinations """
+    sizes = {
+        # key is total cards, value is length of a board row
+        4: 2,
+        8: 4,
+        12: 4,
+        16: 4,
+        20: 4,
+        24: 4,
+        30: 5,
+        36: 6,
+    }
+    # Removing entries above the maximum possible combinations of color/shape
+    max_combinations = len(colors) * len(shapes)
+    for this_size in sizes.copy():
+        if this_size > max_combinations:
+            sizes.pop(this_size)
+    
+    return sizes
 
 
 
@@ -70,19 +89,4 @@ BUTTON_STYLE = {"button_color": (220, 0, 0),
                 "button_font": TITLE_FONT}
 
 
-BOARD_SIZE = {
-    4: 2,
-    8: 4,
-    12: 4,
-    16: 4,
-    20: 4,
-    24: 4,
-    30: 5,
-    36: 6,
-}
-
-# Cheating by modifying a constant: this must be changed, it's a shame
-max_combinations = len(CARDCOLORS) * len(SHAPELIST)
-for size in BOARD_SIZE.copy():
-    if size > max_combinations:
-        BOARD_SIZE.pop(size)
+BOARD_SIZE = _get_board_sizes(CARDCOLORS, SHAPELIST)
