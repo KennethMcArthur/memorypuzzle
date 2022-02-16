@@ -47,7 +47,6 @@ def generate_cards_on_board(rows: int, row_length: int, padding: int, seed_color
     # Placing cards in the output list
     final_card_list = []
     i = 0
-    print(len(seed_color_pairs))
     for pos in coords_list:
         final_card_list.append(Card(pos, card_size, *seed_color_pairs[i], CST.CARD_BACK))
         i += 1
