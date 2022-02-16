@@ -4,6 +4,7 @@
 
 import pygame
 import random
+import time
 import constants as CST
 import board
 from master_class_scene import Scene
@@ -20,11 +21,11 @@ class Gamelevel(Scene):
 		super().__init__(GAME_WINDOW)
 
     	# Scene Elements
-		background = bg.Background()
+		self.background = bg.Background()
 		self.next_scene_params = {"next_scene": CST.SCENES.GAMEMENU,}
 
     	# Append order is draw order
-		self.updatelist.append(background)
+		self.updatelist.append(self.background)
     
     
 	def load_outside_params(self, params: dict) -> None:
@@ -38,8 +39,18 @@ class Gamelevel(Scene):
 		board_rows = total_cards // board_row_length
 		seed_color_pairs = board.get_combinations(total_cards, CST.CARDCOLORS, CST.SHAPELIST)
 		random.shuffle(seed_color_pairs)
+		self.pairs_left = total_cards // 2
+		self.play_timer = time.time()
 		self.card_list = board.generate_cards_on_board(board_rows, board_row_length, 30, seed_color_pairs)
 		self.updatelist.extend(self.card_list)
+
+
+	def reset_state(self) -> None:
+		super().reset_state()
+		self.updatelist.clear()
+		self.updatelist.append(self.background)
+		del self.card_list
+
 
 	def run(self, outside_params: dict) -> int:
 		""" Main loop method """
@@ -78,6 +89,7 @@ class Gamelevel(Scene):
 					selected_cards[0].card_blocked = True
 					selected_cards[1].card_blocked = True
 					selected_cards.clear()
+					self.pairs_left -= 1
 				else:
 					need_wrong_answer_delay = True
 					got_wrong_pair = True
@@ -92,6 +104,13 @@ class Gamelevel(Scene):
 			if need_wrong_answer_delay:
 				pygame.time.wait(1000)
 				need_wrong_answer_delay = False
+			
+			if self.pairs_left <= 0:
+				# Basically victory
+				time_played = time.time() - self.play_timer
+				pygame.time.wait(1000)
+				next_scene_params = {"next_scene": CST.SCENES.GAMEEND, "time_played": time_played}
+				self.quit_loop(next_scene_params)
                 
 		self.reset_state()
 		return self.scene_return_data
