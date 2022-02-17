@@ -61,7 +61,14 @@ class GameEnd(Scene):
 	
 	def load_outside_params(self, params: dict) -> None:
 		time_played = params["time_played"]
-		self.time_played_label.set_text(str(time_played))
+		# Converting to minutes and seconds
+		minutes = int(time_played // 60)
+		seconds = time_played
+		if minutes > 0:
+			seconds = time_played % 60
+		seconds = round(seconds, 2)
+		display_string = f"{minutes}m{seconds}s"
+		self.time_played_label.set_text(display_string)
 		
 
 	# Buttons methods
