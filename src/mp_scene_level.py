@@ -63,7 +63,7 @@ class Gamelevel(Scene):
 		need_wrong_answer_delay = False
 		got_wrong_pair = False
 
-        # Main game loop
+		# Main game loop
 		while self.looping_active:
 
 			delta = gameclock.tick(CST.FPS)
@@ -96,13 +96,16 @@ class Gamelevel(Scene):
 					selected_cards[0].card_flip()
 					selected_cards[1].card_flip()
 
-            # Drawing sequence
+			# Drawing sequence
 			for gameobj in self.updatelist:
 				gameobj.game_tick_update(self.GAME_WINDOW, mousepos, delta) # All classes have this methods
 			pygame.display.update()
 
 			if need_wrong_answer_delay:
+				time_before_delay = time.time()
 				pygame.time.wait(1000)
+				time_after_delay = time.time()
+				self.play_timer += time_after_delay - time_before_delay
 				need_wrong_answer_delay = False
 			
 			if self.pairs_left <= 0:
