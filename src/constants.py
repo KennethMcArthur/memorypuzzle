@@ -62,11 +62,11 @@ SCREEN_WIDTH, SCREEN_HEIGHT = 1024, 768
 MAINSCREEN = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))#, flags=pygame.SCALED, vsync=1)
 
 color_db = {
-    "background": (125,125,125),
-    "regular_text": (255,255,255),
-    "button_idle": (220, 0, 0),
-    "button_hover": (255, 0, 0),
-    "button_text": (0,255,0),
+    "background": pygame.Color("#2A9D8F"),
+    "regular_text": pygame.Color("#E9C46A"),
+    "button_idle": pygame.Color("#264653"),
+    "button_hover": pygame.Color("#38677A"),
+    "button_text": pygame.Color("#F4A261"),
 }
 
 
