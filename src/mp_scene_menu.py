@@ -42,7 +42,6 @@ class GameMenu(Scene):
 		start_button = Button("Start", CST.BUTTON_STYLE, GRID["start_button"], self.button_start)
 		plus_button = Button("+", CST.BUTTON_STYLE, GRID["plus_button"], self.button_plus)
 		minus_button = Button("-", CST.BUTTON_STYLE, GRID["minus_button"], self.button_minus)
-		quit_button = Button("Quit", CST.BUTTON_STYLE, (200,200,100,50), self.quit_loop, self.next_scene_params)
 
     	# Append order is draw order
 		self.updatelist.append(background)
@@ -52,7 +51,6 @@ class GameMenu(Scene):
 		self.updatelist.append(board_size_label)
 		self.updatelist.append(self.board_size_value_label)
 		self.updatelist.append(start_button)
-		self.updatelist.append(quit_button)
 
 
 	def event_checking(self, this_event: pygame.event) -> None:
