@@ -35,13 +35,13 @@ class Gamelevel(Scene):
 			raise KeyError("Missing key parameter")
 
 		total_cards = params["total_cards"]
-		board_row_length = CST.BOARD_SIZE.get(total_cards)
+		board_row_length, padding = CST.BOARD_SIZE.get(total_cards)
 		board_rows = total_cards // board_row_length
 		seed_color_pairs = board.get_combinations(total_cards, CST.CARDCOLORS, CST.SHAPELIST)
 		random.shuffle(seed_color_pairs)
 		self.pairs_left = total_cards // 2
 		self.play_timer = time.time()
-		self.card_list = board.generate_cards_on_board(board_rows, board_row_length, 30, seed_color_pairs)
+		self.card_list = board.generate_cards_on_board(board_rows, board_row_length, padding, seed_color_pairs)
 		self.updatelist.extend(self.card_list)
 
 

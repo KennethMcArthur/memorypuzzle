@@ -36,15 +36,16 @@ def _get_shapes(spritesheet: pygame.Surface) -> list:
 def _get_board_sizes(colors : list, shapes: list) -> dict:
     """ Builds the board size constant, based on current possible combinations """
     sizes = {
-        # key is total cards, value is length of a board row
-        4: 2,
-        8: 4,
-        12: 4,
-        16: 4,
-        20: 4,
-        24: 4,
-        30: 5,
-        36: 6,
+        # Format: total cards: (length of a board row, padding in pixels)
+        4: (2, 30),
+        8: (4, 30),
+        12: (4, 30),
+        16: (4, 30),
+        20: (4, 30),
+        24: (4, 30),
+        30: (5, 30),
+        36: (6, 30),
+        42: (7, 5),
     }
     # Removing entries above the maximum possible combinations of color/shape
     max_combinations = len(colors) * len(shapes)
@@ -85,10 +86,13 @@ class SCENES:
 
 
 CARDCOLORS = (
-    (255, 0, 0), # RED
-    (0, 255, 0), # GREEN
-    (0, 0, 255), # BLUE
-    # ...add more
+    pygame.Color("#FF0000"), # red, ok
+    pygame.Color("#DEFF0A"), # yellow, ok
+    pygame.Color("#0AFF58"), # green, ok
+    pygame.Color("#147DF5"), # blue, ok
+    pygame.Color("#FFFFFF"), # white, ok
+    pygame.Color("#BE0AFF"), # light purple, ok
+    pygame.Color("#FF8700"), # orange, ok
 )
 
 SHAPELIST = _get_shapes(_EVERY_SHAPE)
