@@ -67,7 +67,7 @@ class GameEnd(Scene):
 		if minutes > 0:
 			seconds = time_played % 60
 		seconds = round(seconds, 2)
-		display_string = f"{minutes}m{seconds}s"
+		display_string = f"{minutes}m {seconds}s"
 		self.time_played_label.set_text(display_string)
 		
 

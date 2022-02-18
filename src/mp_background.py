@@ -2,7 +2,7 @@
 
 
 import pygame
-
+import constants as CST
 
 
 class Background:
@@ -10,4 +10,4 @@ class Background:
 		pass
 
 	def game_tick_update(self, window:pygame.Surface, *other_params) -> None:
-		window.fill((125,125,125)) # TODO: add a proper background
+		window.fill(CST.color_db["background"])

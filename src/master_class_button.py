@@ -3,6 +3,7 @@
 
 
 import pygame
+import constants as CST
 pygame.font.init()
 
 
@@ -67,7 +68,7 @@ class Button:
         # Blitting on screen
         surf_to_blit = pygame.Surface((self.button_rect.width, self.button_rect.height))
         surf_to_blit.set_colorkey((0,0,0))
-        surf_to_blit = self.font_surf.render(self.label, True, (0,255,0))
+        surf_to_blit = self.font_surf.render(self.label, True, CST.color_db["button_text"])
         
         pygame.draw.rect(window, actual_color, self.button_rect, border_radius=self.button_border_radius)
         text_pos = (self.button_rect.centerx - surf_to_blit.get_width()//2, self.button_rect.centery - surf_to_blit.get_height()//2)

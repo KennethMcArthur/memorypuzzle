@@ -61,11 +61,20 @@ def _get_board_sizes(colors : list, shapes: list) -> dict:
 SCREEN_WIDTH, SCREEN_HEIGHT = 1024, 768
 MAINSCREEN = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))#, flags=pygame.SCALED, vsync=1)
 
+color_db = {
+    "background": (125,125,125),
+    "regular_text": (255,255,255),
+    "button_idle": (220, 0, 0),
+    "button_hover": (255, 0, 0),
+    "button_text": (0,255,0),
+}
+
+
 _ASSETS_DIR = "assets"
 _EVERY_SHAPE = load_image(_ASSETS_DIR, "spritesheettestblue.png").convert_alpha()
 CARD_BACK = load_image(_ASSETS_DIR, "MemoryCardBackBorderless.png").convert_alpha()
 TITLE_FONT = os.path.join(_ASSETS_DIR, "kongtext.ttf") # Font by codeman38 | cody@zone38.net | http://www.zone38.net/
-TEXT_COLOR = (255,255,255) # White
+TEXT_COLOR = color_db["regular_text"]
 
 FPS = 60
 
@@ -85,8 +94,8 @@ CARDCOLORS = (
 SHAPELIST = _get_shapes(_EVERY_SHAPE)
 
 
-BUTTON_STYLE = {"button_color": (220, 0, 0),
-                "button_color_hover": (255, 0, 0),
+BUTTON_STYLE = {"button_color": color_db["button_idle"],
+                "button_color_hover": color_db["button_hover"],
                 "button_font": TITLE_FONT}
 
 
