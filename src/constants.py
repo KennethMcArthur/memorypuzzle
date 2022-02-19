@@ -41,11 +41,11 @@ def _get_board_sizes(colors : list, shapes: list) -> dict:
         8: (4, 30),
         12: (4, 30),
         16: (4, 30),
-        20: (4, 30),
-        24: (4, 30),
-        30: (5, 30),
-        36: (6, 30),
-        42: (7, 5),
+        20: (5, 30),
+        24: (6, 10),
+        30: (6, 10),
+        36: (6, 10),
+        42: (7, 10),
     }
     # Removing entries above the maximum possible combinations of color/shape
     max_combinations = len(colors) * len(shapes)
@@ -59,7 +59,7 @@ def _get_board_sizes(colors : list, shapes: list) -> dict:
 
 
 # GAME CONSTANTS
-SCREEN_WIDTH, SCREEN_HEIGHT = 1024, 768
+SCREEN_WIDTH, SCREEN_HEIGHT = 768, 768
 MAINSCREEN = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))#, flags=pygame.SCALED, vsync=1)
 
 color_db = {
@@ -73,7 +73,7 @@ color_db = {
 
 _ASSETS_DIR = "assets"
 _EVERY_SHAPE = load_image(_ASSETS_DIR, "spritesheettestblue.png").convert_alpha()
-CARD_BACK = load_image(_ASSETS_DIR, "MemoryCardBackBorderless.png").convert_alpha()
+CARD_BACK = load_image(_ASSETS_DIR, "MemoryCardBack.png").convert_alpha()
 TITLE_FONT = os.path.join(_ASSETS_DIR, "kongtext.ttf") # Font by codeman38 | cody@zone38.net | http://www.zone38.net/
 TEXT_COLOR = color_db["regular_text"]
 
