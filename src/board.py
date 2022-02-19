@@ -28,11 +28,12 @@ def get_combinations(total_cards: int, colors_db: list, shape_db: list) -> list:
 
 def generate_cards_on_board(rows: int, row_length: int, padding: int, seed_color_pairs: list) -> list:
     """ Places each cards at their coordinates """
-    card_size = (CST.SCREEN_HEIGHT - padding * (row_length + 1)) // row_length
+    factor = max(row_length, rows)
+    card_size = (CST.SCREEN_HEIGHT - padding * (factor + 1)) // factor
 
     screen_center = (CST.SCREEN_WIDTH//2, CST.SCREEN_HEIGHT//2)
-    board_width = card_size * row_length + padding * (row_length-1)
-    board_height = card_size * rows + padding * (rows-1)
+    board_width = card_size * row_length + padding * (row_length - 1)
+    board_height = card_size * rows + padding * (rows - 1)
     origin_point = (screen_center[0] - board_width // 2 + card_size // 2,
                     screen_center[1] - board_height // 2 + card_size // 2)
 
@@ -92,12 +93,12 @@ if __name__ == "__main__":
     looping = True
 
 
-    total_cards = 16
-    board_row_length = CST.BOARD_SIZE.get(total_cards)
+    total_cards = 24
+    board_row_length, padding = CST.BOARD_SIZE.get(total_cards)
     board_row_number = total_cards // board_row_length
     seed_color_pairs = get_combinations(total_cards, CST.CARDCOLORS, CST.SHAPELIST)
     random.shuffle(seed_color_pairs)
-    card_list = generate_cards_on_board(board_row_number, board_row_length, 30, seed_color_pairs)
+    card_list = generate_cards_on_board(board_row_number, board_row_length, padding, seed_color_pairs)
 
 
     selected_cards = []
