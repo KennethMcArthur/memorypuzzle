@@ -90,12 +90,12 @@ class Card:
             side_to_blit = self.card_back
         if self.animation_counter >= self.width:
             # Drawing card face
-            currentwidth = self.animation_counter - self.width
+            currentwidth = min(self.animation_counter - self.width, self.width) # Clamping to self.width
             side_to_blit = self.card_face
             color_surface = pygame.Surface((currentwidth, self.mask_margin))
             color_surface.fill(self.card_color)
         
-        side_to_blit = pygame.transform.scale(side_to_blit, (currentwidth,self.width))
+        side_to_blit = pygame.transform.scale(side_to_blit, (currentwidth, self.width))
         side_to_blit.set_colorkey((0, 0, 0)) # setting black as transparent
         
         self.animation_counter += self.increment
