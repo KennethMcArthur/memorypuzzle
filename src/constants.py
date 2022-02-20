@@ -86,13 +86,13 @@ class SCENES:
 
 
 CARDCOLORS = (
-    pygame.Color("#FF0000"), # red, ok
-    pygame.Color("#DEFF0A"), # yellow, ok
-    pygame.Color("#0AFF58"), # green, ok
-    pygame.Color("#147DF5"), # blue, ok
-    pygame.Color("#FFFFFF"), # white, ok
-    pygame.Color("#BE0AFF"), # light purple, ok
-    pygame.Color("#FF8700"), # orange, ok
+    pygame.Color("#FF0000"), # red
+    pygame.Color("#DEFF0A"), # yellow
+    pygame.Color("#0AFF58"), # green
+    pygame.Color("#147DF5"), # blue
+    pygame.Color("#FFFFFF"), # white
+    pygame.Color("#BE0AFF"), # light purple
+    pygame.Color("#FF8700"), # orange
 )
 
 SHAPELIST = _get_shapes(_EVERY_SHAPE)
