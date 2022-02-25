@@ -2,6 +2,7 @@
 
 
 import pygame
+from random import sample
 import constants as CST
 from math import sqrt
 from card import Card
@@ -11,18 +12,15 @@ from card import Card
 
 
 def get_combinations(total_cards: int, colors_db: list, shape_db: list) -> list:
-    """ Returns a list of every needed combination of (seed, color) """
-    total_card_couples = total_cards // 2
-    seeds_needed = total_card_couples // len(colors_db) +1 # Using every color possible first
-    
+    """ Returns a list of every needed combination of (shape, color), in pairs """
+    total_card_pairs = total_cards // 2
     total_comb = []
 
-    for seed_index in range(seeds_needed):
+    for shape in shape_db:
         for color in colors_db:
-            total_comb.append((shape_db[seed_index], color))
-            total_comb.append((shape_db[seed_index], color))
-
-    return total_comb[:total_cards]
+            total_comb.append((shape, color))
+    
+    return sample(total_comb, total_card_pairs) * 2
         
 
 
@@ -44,13 +42,10 @@ def generate_cards_on_board(rows: int, row_length: int, padding: int, seed_color
                             origin_point[1] + (card_size + padding)*row)
             coords_list.append(this_coord)
     
-    
     # Placing cards in the output list
     final_card_list = []
-    i = 0
-    for pos in coords_list:
+    for i, pos in enumerate(coords_list):
         final_card_list.append(Card(pos, card_size, *seed_color_pairs[i], CST.CARD_BACK))
-        i += 1
     
     return final_card_list
 
@@ -93,7 +88,7 @@ if __name__ == "__main__":
     looping = True
 
 
-    total_cards = 24
+    total_cards = 4
     board_row_length, padding = CST.BOARD_SIZE.get(total_cards)
     board_row_number = total_cards // board_row_length
     seed_color_pairs = get_combinations(total_cards, CST.CARDCOLORS, CST.SHAPELIST)
