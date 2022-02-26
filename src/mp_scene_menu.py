@@ -31,6 +31,7 @@ class GameMenu(Scene):
 			"b_value": (HALF_SCREEN, THIRD_ROW),
 			"plus_button": (ONETHIRD_SCREEN*2-25, THIRD_ROW-25, 50, 50),
 			"start_button": (HALF_SCREEN-ONETHIRD_SCREEN//2, FOURTH_ROW, ONETHIRD_SCREEN, ONETHIRD_SCREEN//4),
+			"credits_button": (CST.SCREEN_WIDTH-50, CST.SCREEN_HEIGHT-50, 50, 50),
 		}
 
 		self.BOARD_SIZES = list(CST.BOARD_SIZE.keys())
@@ -44,6 +45,7 @@ class GameMenu(Scene):
 		start_button = Button("Start", CST.BUTTON_STYLE, GRID["start_button"], self.button_start)
 		plus_button = Button("+", CST.BUTTON_STYLE, GRID["plus_button"], self.button_plus)
 		minus_button = Button("-", CST.BUTTON_STYLE, GRID["minus_button"], self.button_minus)
+		credits_button = Button("i", CST.BUTTON_STYLE, GRID["credits_button"], self.button_credits)
 
     	# Append order is draw order
 		self.updatelist.append(background)
@@ -54,6 +56,7 @@ class GameMenu(Scene):
 		self.updatelist.append(board_size_label)
 		self.updatelist.append(self.board_size_value_label)
 		self.updatelist.append(start_button)
+		self.updatelist.append(credits_button)
 
 
 	def event_checking(self, this_event: pygame.event) -> None:
@@ -84,6 +87,12 @@ class GameMenu(Scene):
 		if self.board_size_index < 0:
 			self.board_size_index = len(self.BOARD_SIZES)-1
 		self.board_size_value_label.set_text(str(self.BOARD_SIZES[self.board_size_index]))
+	
+	def button_credits(self):
+		new_next_scene_params = {
+			"next_scene": CST.SCENES.GAMECREDITS,
+		}
+		self.quit_loop(new_next_scene_params)
 
 
 

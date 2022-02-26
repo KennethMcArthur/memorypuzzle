@@ -74,6 +74,7 @@ class SCENES:
     GAMEMENU = 0
     GAMELEVEL = 1
     GAMEEND = 2
+    GAMECREDITS = 3
 
 
 

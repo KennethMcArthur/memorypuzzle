@@ -7,6 +7,7 @@ from src import constants as CST
 from src import mp_scene_menu
 from src import mp_scene_level
 from src import mp_scene_end
+from src import mp_scene_credits
 
 
 pygame.init()
@@ -21,11 +22,13 @@ def main_game():
     gamemenu = mp_scene_menu.GameMenu(GAMEWINDOW)
     gamelevel = mp_scene_level.Gamelevel(GAMEWINDOW)
     gameendscreen = mp_scene_end.GameEnd(GAMEWINDOW)
+    gamecredits = mp_scene_credits.GameCredits(GAMEWINDOW)
 
     scenelist = [
         gamemenu,
         gamelevel,
         gameendscreen,
+        gamecredits,
     ]
 
     scene_params = {"next_scene": 0,}
