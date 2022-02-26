@@ -9,7 +9,7 @@ import pygame, os
 
 # HELPER METHODS
 
-def load_image(asset_folder: str, filename: str) -> pygame.Surface:
+def _load_image(asset_folder: str, filename: str) -> pygame.Surface:
     """ Error handling image loading function """
     fullname = os.path.join(asset_folder, filename)
     try:
@@ -59,30 +59,30 @@ def _get_board_sizes(colors : list, shapes: list) -> dict:
 
 
 # GAME CONSTANTS
+FPS = 60
 SCREEN_WIDTH, SCREEN_HEIGHT = 768, 768
 MAINSCREEN = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))#, flags=pygame.SCALED, vsync=1)
 
-color_db = {
-    "background": pygame.Color("#2A9D8F"),
-    "regular_text": pygame.Color("#E9C46A"),
-    "button_idle": pygame.Color("#264653"),
-    "button_hover": pygame.Color("#38677A"),
-    "button_text": pygame.Color("#F4A261"),
-}
-
-
-_ASSETS_DIR = "assets"
-_EVERY_SHAPE = load_image(_ASSETS_DIR, "spritesheettestblue.png").convert_alpha()
-CARD_BACK = load_image(_ASSETS_DIR, "MemoryCardBack.png").convert_alpha()
-TITLE_FONT = os.path.join(_ASSETS_DIR, "kongtext.ttf") # Font by codeman38 | cody@zone38.net | http://www.zone38.net/
-TEXT_COLOR = color_db["regular_text"]
-
-FPS = 60
+class COLOR:
+    BACKGROUND = pygame.Color("#2A9D8F")
+    REGULAR_TEXT = pygame.Color("#E9C46A")
+    BUTTON_IDLE = pygame.Color("#264653")
+    BUTTON_HOVER = pygame.Color("#38677A")
+    BUTTON_TEXT = pygame.Color("#F4A261")
 
 class SCENES:
     GAMEMENU = 0
     GAMELEVEL = 1
     GAMEEND = 2
+
+
+
+_ASSETS_DIR = "assets"
+_EVERY_SHAPE = _load_image(_ASSETS_DIR, "spritesheettestblue.png").convert_alpha()
+CARD_BACK = _load_image(_ASSETS_DIR, "MemoryCardBack.png").convert_alpha()
+TITLE_FONT = os.path.join(_ASSETS_DIR, "kongtext.ttf") # Font by codeman38 | cody@zone38.net | http://www.zone38.net/
+TEXT_COLOR = COLOR.REGULAR_TEXT
+
 
 
 CARDCOLORS = (
@@ -98,8 +98,8 @@ CARDCOLORS = (
 SHAPELIST = _get_shapes(_EVERY_SHAPE)
 
 
-BUTTON_STYLE = {"button_color": color_db["button_idle"],
-                "button_color_hover": color_db["button_hover"],
+BUTTON_STYLE = {"button_color": COLOR.BUTTON_IDLE,
+                "button_color_hover": COLOR.BUTTON_HOVER,
                 "button_font": TITLE_FONT}
 
 

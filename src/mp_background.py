@@ -10,4 +10,4 @@ class Background:
 		pass
 
 	def game_tick_update(self, window:pygame.Surface, *other_params) -> None:
-		window.fill(CST.color_db["background"])
+		window.fill(CST.COLOR.BACKGROUND)
