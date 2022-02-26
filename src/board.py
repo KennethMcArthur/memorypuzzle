@@ -23,24 +23,37 @@ def get_combinations(total_cards: int, colors_db: list, shape_db: list) -> list:
     return sample(total_comb, total_card_pairs) * 2
         
 
+def _get_origin_point(card_size: int, rows: int, row_length: int, padding: int) -> tuple:
+    """ Generates the coordinates of the first card on the board """
+    screen_center = (CST.SCREEN_WIDTH//2, CST.SCREEN_HEIGHT//2)
+    board_width = card_size * row_length + padding * (row_length - 1)
+    board_height = card_size * rows + padding * (rows - 1)
+
+    origin_x = screen_center[0] - board_width // 2 + card_size // 2
+    origin_y = screen_center[1] - board_height // 2 + card_size // 2
+
+    return (origin_x, origin_y)
+
+
+def _get_cards_coords(origin_point: tuple, card_size: int, rows: int, row_length: int, padding: int) -> list:
+    """ Generates a placing point on the screen for each cards """
+    coords_list = []
+
+    for row in range(rows):
+        for col in range(row_length):
+            this_x = origin_point[0] + (card_size + padding) * col
+            this_y = origin_point[1] + (card_size + padding) * row
+            coords_list.append((this_x, this_y))
+    
+    return coords_list
+
 
 def generate_cards_on_board(rows: int, row_length: int, padding: int, seed_color_pairs: list) -> list:
     """ Places each cards at their coordinates """
     factor = max(row_length, rows)
     card_size = (CST.SCREEN_HEIGHT - padding * (factor + 1)) // factor
-
-    screen_center = (CST.SCREEN_WIDTH//2, CST.SCREEN_HEIGHT//2)
-    board_width = card_size * row_length + padding * (row_length - 1)
-    board_height = card_size * rows + padding * (rows - 1)
-    origin_point = (screen_center[0] - board_width // 2 + card_size // 2,
-                    screen_center[1] - board_height // 2 + card_size // 2)
-
-    coords_list = []
-    for row in range(rows):
-        for col in range(row_length):
-            this_coord = (origin_point[0] + (card_size + padding)*col,
-                            origin_point[1] + (card_size + padding)*row)
-            coords_list.append(this_coord)
+    origin_point = _get_origin_point(card_size, rows, row_length, padding)
+    coords_list = _get_cards_coords(origin_point, card_size, rows, row_length, padding)
     
     # Placing cards in the output list
     final_card_list = []
@@ -88,7 +101,7 @@ if __name__ == "__main__":
     looping = True
 
 
-    total_cards = 4
+    total_cards = 42
     board_row_length, padding = CST.BOARD_SIZE.get(total_cards)
     board_row_number = total_cards // board_row_length
     seed_color_pairs = get_combinations(total_cards, CST.CARDCOLORS, CST.SHAPELIST)
