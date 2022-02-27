@@ -134,7 +134,7 @@ def main_tests():
     gameclock = pygame.time.Clock()
     looping = True
 
-    a_color = CST.CARDCOLORS[0]
+    a_color = CST.COLOR.CARDCOLORS[0]
 
     dummycard = Card((200,200), 64, CST.SHAPELIST[4], a_color, CST.CARD_BACK)
     dummybigcard = Card((64, 64), 128, CST.SHAPELIST[4], a_color, CST.CARD_BACK)

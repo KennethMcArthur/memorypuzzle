@@ -103,7 +103,7 @@ if __name__ == "__main__":
     total_cards = 42
     board_row_length, padding = CST.BOARD_SIZE.get(total_cards)
     board_row_number = total_cards // board_row_length
-    seed_color_pairs = get_combinations(total_cards, CST.CARDCOLORS, CST.SHAPELIST)
+    seed_color_pairs = get_combinations(total_cards, CST.COLOR.CARDCOLORS, CST.SHAPELIST)
     random.shuffle(seed_color_pairs)
     card_list = generate_cards_on_board(board_row_number, board_row_length, padding, seed_color_pairs)
 

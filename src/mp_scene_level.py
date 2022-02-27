@@ -37,7 +37,7 @@ class Gamelevel(Scene):
 		total_cards = params["total_cards"]
 		board_row_length, padding = CST.BOARD_SIZE.get(total_cards)
 		board_rows = total_cards // board_row_length
-		seed_color_pairs = board.get_combinations(total_cards, CST.CARDCOLORS, CST.SHAPELIST)
+		seed_color_pairs = board.get_combinations(total_cards, CST.COLOR.CARDCOLORS, CST.SHAPELIST)
 		random.shuffle(seed_color_pairs)
 		self.pairs_left = total_cards // 2
 		self.play_timer = time.time()

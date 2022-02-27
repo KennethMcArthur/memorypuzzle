@@ -61,7 +61,8 @@ def _get_board_sizes(colors : list, shapes: list) -> dict:
 # GAME CONSTANTS
 FPS = 60
 SCREEN_WIDTH, SCREEN_HEIGHT = 768, 768
-MAINSCREEN = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))#, flags=pygame.SCALED, vsync=1)
+MAINSCREEN = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+
 
 class COLOR:
     BACKGROUND = pygame.Color("#2A9D8F")
@@ -69,13 +70,15 @@ class COLOR:
     BUTTON_IDLE = pygame.Color("#264653")
     BUTTON_HOVER = pygame.Color("#38677A")
     BUTTON_TEXT = pygame.Color("#F4A261")
-
-class SCENES:
-    GAMEMENU = 0
-    GAMELEVEL = 1
-    GAMEEND = 2
-    GAMECREDITS = 3
-
+    CARDCOLORS = (
+        pygame.Color("#FF0000"), # red
+        pygame.Color("#DEFF0A"), # yellow
+        pygame.Color("#0AFF58"), # green
+        pygame.Color("#147DF5"), # blue
+        pygame.Color("#FFFFFF"), # white
+        pygame.Color("#BE0AFF"), # light purple
+        pygame.Color("#FF8700"), # orange
+    )
 
 
 _ASSETS_DIR = "assets"
@@ -85,18 +88,8 @@ TITLE_FONT = os.path.join(_ASSETS_DIR, "kongtext.ttf") # Font by codeman38 | cod
 TEXT_COLOR = COLOR.REGULAR_TEXT
 
 
-
-CARDCOLORS = (
-    pygame.Color("#FF0000"), # red
-    pygame.Color("#DEFF0A"), # yellow
-    pygame.Color("#0AFF58"), # green
-    pygame.Color("#147DF5"), # blue
-    pygame.Color("#FFFFFF"), # white
-    pygame.Color("#BE0AFF"), # light purple
-    pygame.Color("#FF8700"), # orange
-)
-
 SHAPELIST = _get_shapes(_EVERY_SHAPE)
+BOARD_SIZE = _get_board_sizes(COLOR.CARDCOLORS, SHAPELIST)
 
 
 BUTTON_STYLE = {"button_color": COLOR.BUTTON_IDLE,
@@ -104,4 +97,8 @@ BUTTON_STYLE = {"button_color": COLOR.BUTTON_IDLE,
                 "button_font": TITLE_FONT}
 
 
-BOARD_SIZE = _get_board_sizes(CARDCOLORS, SHAPELIST)
+class SCENES:
+    GAMEMENU = 0
+    GAMELEVEL = 1
+    GAMEEND = 2
+    GAMECREDITS = 3
