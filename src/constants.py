@@ -79,7 +79,7 @@ class SCENES:
 
 
 _ASSETS_DIR = "assets"
-_EVERY_SHAPE = _load_image(_ASSETS_DIR, "spritesheettestblue.png").convert_alpha()
+_EVERY_SHAPE = _load_image(_ASSETS_DIR, "shapesmask.png").convert_alpha()
 CARD_BACK = _load_image(_ASSETS_DIR, "MemoryCardBack.png").convert_alpha()
 TITLE_FONT = os.path.join(_ASSETS_DIR, "kongtext.ttf") # Font by codeman38 | cody@zone38.net | http://www.zone38.net/
 TEXT_COLOR = COLOR.REGULAR_TEXT
