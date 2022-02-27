@@ -17,6 +17,7 @@ pygame.init()
 def main_game():
 
     GAMEWINDOW = CST.MAINSCREEN
+    pygame.display.set_caption("Memory Puzzle")
 
     # Scene initialization
     gamemenu = mp_scene_menu.GameMenu(GAMEWINDOW)
