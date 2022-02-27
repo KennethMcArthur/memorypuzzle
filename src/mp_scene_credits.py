@@ -87,8 +87,8 @@ class GameCredits(Scene):
 # TESTING
 if __name__ == "__main__":
 
-	test_end = GameCredits(CST.MAINSCREEN)
+	test_creds = GameCredits(CST.MAINSCREEN)
 
 	next_scene_params = {"next_scene": 0,}
-	next_scene_params = test_end.run(next_scene_params)
+	next_scene_params = test_creds.run(next_scene_params)
 	print("Next scene params:", next_scene_params)
