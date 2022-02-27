@@ -71,8 +71,7 @@ def card_clicked_at(coords: tuple, card_list: list) -> Card:
         if card.mouseover(coords):
             clicked_card = card
             break
-    
-    # Checking if the card is clickable (not yet selected)
+
     if clicked_card is not None and clicked_card.is_selectable():
         return clicked_card
 
