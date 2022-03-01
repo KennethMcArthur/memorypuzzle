@@ -1,10 +1,9 @@
-# MEMORY PUZZLE: Board element
+# MEMORY PUZZLE: Board method collection
 
 
 import pygame
 from random import sample
 import constants as CST
-from math import sqrt
 from card import Card
 
 
