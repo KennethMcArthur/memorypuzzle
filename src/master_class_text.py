@@ -19,10 +19,12 @@ class StaticText:
         self.titlefont = pygame.font.Font(CST.TITLE_FONT, size)
         self.set_text(text)
 
+
     def set_text(self, new_text: str) -> None:
         """ Updates the text """
         self.titletext = self.titlefont.render(new_text, True, CST.TEXT_COLOR)
         self.place_text()
+
 
     def place_text(self):
         """ Places the text at the proper coords based on alignment """
@@ -33,6 +35,7 @@ class StaticText:
             self.titlerect.center = (self.pos_x, self.pos_y)
         elif self.alignment == StaticText.RIGHT:
             self.titlerect.topright = (self.pos_x, self.pos_y)
+
 
     def game_tick_update(self, window: pygame.Surface, mouse_pos: tuple, delta: float) -> None:
         window.blit(self.titletext, self.titlerect)

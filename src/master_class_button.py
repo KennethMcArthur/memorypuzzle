@@ -17,7 +17,7 @@ class Button:
         """ Initializing button """
         
         # Validating style dict keys
-        if not all(key in Button.STYLE_ATTR_NEEDED for key in style):
+        if not all(key in style for key in Button.STYLE_ATTR_NEEDED):
             raise KeyError("Missing style attribute")
         
         self.label = label
@@ -41,7 +41,7 @@ class Button:
         self.font_surf = pygame.font.Font(self.style["button_font"], size-1)
 
 
-    def _check_if_mouse_over(self, mousepos: tuple) -> bool:
+    def _is_mouse_over(self, mousepos: tuple) -> bool:
         """ Returns if the mouse cursor is inside the button area """
         in_x = self.button_rect.x <= mousepos[0] <= self.button_rect.x + self.button_rect.width
         in_y = self.button_rect.y <= mousepos[1] <= self.button_rect.y + self.button_rect.height
@@ -50,14 +50,14 @@ class Button:
 
     def mouse_clicked(self, mousepos: tuple):
         """ Calls the assigned method on button click, returns what that method returns """
-        if self._check_if_mouse_over(mousepos):
+        if self._is_mouse_over(mousepos):
             return self.func_to_call(*self.func_parameters)
 
 
     def game_tick_update(self, window: pygame.Surface, mousepos: tuple, delta: float):
         """ Updates the button each frame """
 
-        mouse_is_over = self._check_if_mouse_over(mousepos)
+        mouse_is_over = self._is_mouse_over(mousepos)
 
         if mouse_is_over:
             actual_color = self.style["button_color_hover"]

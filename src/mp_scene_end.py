@@ -49,7 +49,6 @@ class GameEnd(Scene):
 		self.updatelist.append(start_button)
 
 
-
 	def event_checking(self, this_event: pygame.event) -> None:
 		super().event_checking(this_event)
 
@@ -58,7 +57,8 @@ class GameEnd(Scene):
 			for element in self.updatelist:
 				if isinstance(element, Button):
 					element.mouse_clicked(this_event.pos)
-	
+
+
 	def load_outside_params(self, params: dict) -> None:
 		time_played = params["time_played"]
 		# Converting to minutes and seconds
@@ -78,6 +78,13 @@ class GameEnd(Scene):
 			"total_cards": self.BOARD_SIZES[self.board_size_index],
 		}
 		self.quit_loop(new_next_scene_params)
+
+
+
+
+
+
+
 
 
 

@@ -55,7 +55,6 @@ class Gamelevel(Scene):
 	def run(self, outside_params: dict) -> int:
 		""" Main loop method """
 		self.load_outside_params(outside_params)
-		self.load_and_start_music() # Starting music only when Scene is active
 
 		gameclock = pygame.time.Clock()
 
@@ -85,16 +84,17 @@ class Gamelevel(Scene):
 
 			# Card checking        
 			if len(selected_cards) == 2 and all(card.is_fully_flipped() for card in selected_cards):
-				if selected_cards[0] == selected_cards[1]:
-					selected_cards[0].card_blocked = True
-					selected_cards[1].card_blocked = True
+				card1, card2 = selected_cards
+				if card1 == card2:
+					card1.card_blocked = True
+					card2.card_blocked = True
 					selected_cards.clear()
 					self.pairs_left -= 1
 				else:
 					need_wrong_answer_delay = True
 					got_wrong_pair = True
-					selected_cards[0].card_flip()
-					selected_cards[1].card_flip()
+					card1.card_flip()
+					card2.card_flip()
 
 			# Drawing sequence
 			for gameobj in self.updatelist:
@@ -117,6 +117,10 @@ class Gamelevel(Scene):
                 
 		self.reset_state()
 		return self.scene_return_data
+
+
+
+
 
 
 
