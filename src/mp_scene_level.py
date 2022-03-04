@@ -93,8 +93,7 @@ class Gamelevel(Scene):
 				else:
 					need_wrong_answer_delay = True
 					got_wrong_pair = True
-					card1.card_flip()
-					card2.card_flip()
+
 
 			# Drawing sequence
 			for gameobj in self.updatelist:
@@ -107,6 +106,8 @@ class Gamelevel(Scene):
 				time_after_delay = time.time()
 				self.play_timer += time_after_delay - time_before_delay
 				need_wrong_answer_delay = False
+				card1.card_flip()
+				card2.card_flip()
 			
 			if self.pairs_left <= 0:
 				# Basically victory

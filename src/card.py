@@ -1,7 +1,7 @@
 # MEMORY PUZZLE: CARD OBJECT
 
 import pygame
-
+import constants as CST
 
 
 
@@ -22,6 +22,7 @@ class Card:
         self.card_shape = shape_sprite
         self.card_face = pygame.transform.scale(shape_sprite, (self.width, self.width))
         self.card_back = pygame.transform.scale(card_back, (self.width, self.width))
+        self.flip_sound = CST.CARD_FLIP_SOUND
 
         self.animation_counter = 0 # 0 face down card, self.width*2 face up card
         self.animation_speed = self.width // 10
@@ -48,6 +49,7 @@ class Card:
             self.increment = self.animation_speed
         elif self.animation_counter >= self.width * 2: # Card is face up
             self.increment = -self.animation_speed
+        self.flip_sound.play()
 
 
     def is_selectable(self) -> bool:

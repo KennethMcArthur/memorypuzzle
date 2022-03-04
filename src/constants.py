@@ -1,10 +1,10 @@
 # CONSTANTS
 
-
-
 import pygame, os
 
 
+
+pygame.mixer.init()
 
 
 # HELPER METHODS
@@ -17,6 +17,17 @@ def _load_image(asset_folder: str, filename: str) -> pygame.Surface:
     except Exception as message:
         print("Cannot load image:", filename)
         raise SystemExit(message)
+
+
+def load_audio_sfx(audio_asset_folder: str, filename: str) -> pygame.mixer.Sound:
+    """ Error handling audio loading function """
+    fullname = os.path.join(audio_asset_folder, filename)
+    try:
+        return pygame.mixer.Sound(fullname)
+    except Exception as message:
+        print("Cannot load audio:", filename)
+        raise SystemExit(message)
+
 
 def _get_shapes(spritesheet: pygame.Surface) -> list:
     """ Returns a list of shape sprites """
@@ -86,6 +97,7 @@ _EVERY_SHAPE = _load_image(_ASSETS_DIR, "shapesmask.png").convert_alpha()
 CARD_BACK = _load_image(_ASSETS_DIR, "MemoryCardBack.png").convert_alpha()
 TITLE_FONT = os.path.join(_ASSETS_DIR, "kongtext.ttf") # Font by codeman38 | cody@zone38.net | http://www.zone38.net/
 TEXT_COLOR = COLOR.REGULAR_TEXT
+CARD_FLIP_SOUND = load_audio_sfx(_ASSETS_DIR, "Card-flip-sound-effect.ogg")
 
 
 SHAPELIST = _get_shapes(_EVERY_SHAPE)
