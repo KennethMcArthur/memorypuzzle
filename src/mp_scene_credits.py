@@ -18,17 +18,19 @@ class GameCredits(Scene):
     	# Scene Elements
 		HALF_SCREEN = CST.SCREEN_WIDTH//2
 		ONETHIRD_SCREEN = CST.SCREEN_WIDTH//3
-		VERTICAL_GRID_UNIT = CST.SCREEN_HEIGHT // 16
-		TEXTSIZE_SMALL = 24
-		TEXTSIZE_BIG = 40
+		VERTICAL_GRID_UNIT = CST.SCREEN_HEIGHT // 20
+		TEXTSIZE_SMALL = 14
+		TEXTSIZE_BIG = 20
 		TEXTSIZE_TITLE = 80
 		TITLE_ROW = VERTICAL_GRID_UNIT * 2
 		G_A_TITLE_ROW = VERTICAL_GRID_UNIT * 5
 		G_A_CREDIT_ROW = VERTICAL_GRID_UNIT * 6
-		FONT_TITLE_ROW = VERTICAL_GRID_UNIT * 8
-		FONT_CREDIT1_ROW = VERTICAL_GRID_UNIT * 9
-		FONT_CREDIT2_ROW = VERTICAL_GRID_UNIT * 10
-		MENU_BUTTON_ROW = VERTICAL_GRID_UNIT * 13
+		FONT_TITLE_ROW = VERTICAL_GRID_UNIT * 9
+		FONT_CREDIT1_ROW = VERTICAL_GRID_UNIT * 10
+		FONT_CREDIT2_ROW = VERTICAL_GRID_UNIT * 11
+		SOUND_TITLE = VERTICAL_GRID_UNIT * 14
+		SOUND_CREDIT = VERTICAL_GRID_UNIT * 15
+		MENU_BUTTON_ROW = VERTICAL_GRID_UNIT * 18
 		GRID = {
 			"title": (HALF_SCREEN, TITLE_ROW),
 			"g_a_title": (HALF_SCREEN, G_A_TITLE_ROW),
@@ -36,6 +38,8 @@ class GameCredits(Scene):
 			"font_title": (HALF_SCREEN, FONT_TITLE_ROW),
 			"font_credit_1": (HALF_SCREEN, FONT_CREDIT1_ROW),
 			"font_credit_2": (HALF_SCREEN, FONT_CREDIT2_ROW),
+			"sound_title": (HALF_SCREEN, SOUND_TITLE),
+			"sound_credit": (HALF_SCREEN, SOUND_CREDIT),
 			"menu_button": (HALF_SCREEN-ONETHIRD_SCREEN//2, MENU_BUTTON_ROW, ONETHIRD_SCREEN, ONETHIRD_SCREEN//4),
 		}
 
@@ -48,7 +52,9 @@ class GameCredits(Scene):
 		g_a_credit = StaticText("Simone 'Kenneth' Canova", TEXTSIZE_SMALL, GRID["g_a_credit"], StaticText.CENTER)
 		font_title = StaticText("< Font >", TEXTSIZE_BIG, GRID["font_title"], StaticText.CENTER)
 		font_credit1 = StaticText("codeman38", TEXTSIZE_SMALL, GRID["font_credit_1"], StaticText.CENTER)
-		font_credit2 = StaticText("http://www.zone38.net/", TEXTSIZE_SMALL, GRID["font_credit_2"], StaticText.CENTER)
+		font_credit2 = StaticText("www.zone38.net", TEXTSIZE_SMALL, GRID["font_credit_2"], StaticText.CENTER)
+		sound_title = StaticText("< Sound >", TEXTSIZE_BIG, GRID["sound_title"], StaticText.CENTER)
+		sound_credit = StaticText("notification-sounds.com", TEXTSIZE_SMALL, GRID["sound_credit"], StaticText.CENTER)
 		menu_button = Button("Menu", CST.BUTTON_STYLE, GRID["menu_button"], self.button_menu)
 
     	# Append order is draw order
@@ -59,6 +65,8 @@ class GameCredits(Scene):
 		self.updatelist.append(font_title)
 		self.updatelist.append(font_credit1)
 		self.updatelist.append(font_credit2)
+		self.updatelist.append(sound_title)
+		self.updatelist.append(sound_credit)
 		self.updatelist.append(menu_button)
 
 
