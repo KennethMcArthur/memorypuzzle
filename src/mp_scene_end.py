@@ -32,6 +32,7 @@ class GameEnd(Scene):
 			"quit_button": (),
 		}
 
+		self.VICTORY_SOUND = CST.VICTORY_SOUND
 		self.BOARD_SIZES = list(CST.BOARD_SIZE.keys())
 		self.board_size_index = 0
 		self.next_scene_params = {"next_scene": CST.SCENES.GAMEMENU,}
@@ -69,7 +70,13 @@ class GameEnd(Scene):
 		seconds = round(seconds, 2)
 		display_string = f"{minutes}m {seconds}s"
 		self.time_played_label.set_text(display_string)
-		
+		self.VICTORY_SOUND.play()
+
+
+	def quit_loop(self, data_to_return: dict) -> None:
+		self.VICTORY_SOUND.stop()
+		super().quit_loop(data_to_return)
+
 
 	# Buttons methods
 	def button_start(self):
@@ -78,6 +85,7 @@ class GameEnd(Scene):
 			"total_cards": self.BOARD_SIZES[self.board_size_index],
 		}
 		self.quit_loop(new_next_scene_params)
+
 
 
 
