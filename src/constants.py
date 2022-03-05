@@ -93,12 +93,12 @@ class COLOR:
 
 
 _ASSETS_DIR = "assets"
-_EVERY_SHAPE = _load_image(_ASSETS_DIR, "shapesmask.png").convert_alpha()
+_EVERY_SHAPE = _load_image(_ASSETS_DIR, "shapemask.png").convert_alpha()
 CARD_BACK = _load_image(_ASSETS_DIR, "MemoryCardBack.png").convert_alpha()
 TITLE_FONT = os.path.join(_ASSETS_DIR, "kongtext.ttf") # Font by codeman38 | cody@zone38.net | http://www.zone38.net/
 TEXT_COLOR = COLOR.REGULAR_TEXT
 CARD_FLIP_SOUND = load_audio_sfx(_ASSETS_DIR, "Card-flip-sound-effect.ogg")
-VICTORY_SOUND = load_audio_sfx(_ASSETS_DIR, "Quiz-correct-sound-with-applause.ogg")
+VICTORY_SOUND = load_audio_sfx(_ASSETS_DIR, "Ta-da-sound.ogg")
 
 
 SHAPELIST = _get_shapes(_EVERY_SHAPE)
