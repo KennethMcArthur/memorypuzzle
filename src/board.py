@@ -64,15 +64,9 @@ def generate_cards_on_board(rows: int, row_length: int, padding: int, seed_color
 
 def card_clicked_at(coords: tuple, card_list: list) -> Card:
     """ Returns the card at the clicked point, or None if no card was there """
-    # Checking if the mouse is over a card
-    clicked_card = None
     for card in card_list:
-        if card.mouseover(coords):
-            clicked_card = card
-            break
-
-    if clicked_card is not None and clicked_card.is_selectable():
-        return clicked_card
+        if card.mouseover(coords) and card.is_selectable():
+            return card
 
     return None
         
