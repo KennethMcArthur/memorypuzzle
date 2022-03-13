@@ -1,27 +1,23 @@
 # MEMORY PUZZLE: Button Master Class
 
 
-
 import pygame
-import constants as CST
-pygame.font.init()
+from AssetLoader import AssetLoader
 
 
 
 
-class Button:
+class Button(AssetLoader):
 
-    STYLE_ATTR_NEEDED = ["button_color", "button_color_hover", "button_font"]
+    # Style constants
+    COLOR = pygame.Color("#264653")
+    COLOR_HOVER = pygame.Color("#38677A")
+    FONT = AssetLoader.load_font("kongtext.ttf")
+    TEXT_COLOR = pygame.Color("#F4A261")
 
-    def __init__(self, label: str, style: dict, pos_and_size: tuple, func_to_call=None, *func_parameters):
-        """ Initializing button """
-        
-        # Validating style dict keys
-        if not all(key in style for key in Button.STYLE_ATTR_NEEDED):
-            raise KeyError("Missing style attribute")
-        
+    def __init__(self, label: dict, pos_and_size: tuple, func_to_call=None, *func_parameters):
+        """ Initializing button """        
         self.label = label
-        self.style = style
         self.button_rect = pygame.Rect(pos_and_size)
         self.button_border_radius = min(self.button_rect.width, self.button_rect.height) // 4
         self.func_to_call = func_to_call
@@ -35,10 +31,10 @@ class Button:
         max_height = self.button_rect.height - margin
 
         while text_dim[0] < max_width and text_dim[1] < max_height:
-            text_dim = pygame.font.Font(self.style["button_font"], size).size(self.label)
+            text_dim = pygame.font.Font(Button.FONT, size).size(self.label)
             size += 1
 
-        self.font_surf = pygame.font.Font(self.style["button_font"], size-1)
+        self.FONT_SURFACE = pygame.font.Font(Button.FONT, size-1)
 
 
     def _is_mouse_over(self, mousepos: tuple) -> bool:
@@ -60,15 +56,14 @@ class Button:
         mouse_is_over = self._is_mouse_over(mousepos)
 
         if mouse_is_over:
-            actual_color = self.style["button_color_hover"]
+            actual_color = Button.COLOR_HOVER
         else:
-            actual_color = self.style["button_color"]
-
+            actual_color = Button.COLOR
 
         # Blitting on screen
         surf_to_blit = pygame.Surface((self.button_rect.width, self.button_rect.height))
         surf_to_blit.set_colorkey((0,0,0))
-        surf_to_blit = self.font_surf.render(self.label, True, CST.COLOR.BUTTON_TEXT)
+        surf_to_blit = self.FONT_SURFACE.render(self.label, True, Button.TEXT_COLOR)
         
         pygame.draw.rect(window, actual_color, self.button_rect, border_radius=self.button_border_radius)
         text_pos = (self.button_rect.centerx - surf_to_blit.get_width()//2, self.button_rect.centery - surf_to_blit.get_height()//2)
@@ -84,7 +79,6 @@ class Button:
 
 # TESTING
 if __name__ == "__main__":
-    import constants as CST
     import sys
 
     pygame.init()
@@ -94,19 +88,19 @@ if __name__ == "__main__":
     def tell(what: str):
         print("I'm telling:", what)
 
-    mainscreen = CST.MAINSCREEN
+    mainscreen = pygame.display.set_mode((768, 768))
     gameclock = pygame.time.Clock()
     looping = True
 
     updatelist = [
-        Button("Test1", CST.BUTTON_STYLE, (50,50, 150, 50), tell, "test1"),
-        Button("Test2", CST.BUTTON_STYLE, (150,200, 150, 50), tell, "test2"),
-        Button("This is a long text for a button", CST.BUTTON_STYLE, (300,300, 150, 50), tell, "looong text"),
-        Button("Test4", CST.BUTTON_STYLE, (450,350, 150, 50), tell, "test 4"),
+        Button("Test1", (50,50, 150, 50), tell, "test1"),
+        Button("Test2", (150,200, 150, 50), tell, "test2"),
+        Button("This is a long text for a button", (300,300, 150, 50), tell, "looong text"),
+        Button("Test4", (450,350, 150, 50), tell, "test 4"),
     ]
 
     while looping:
-        delta = gameclock.tick(CST.FPS)
+        delta = gameclock.tick(60) # 60 fps
         mousepos = pygame.mouse.get_pos()
 
         for event in pygame.event.get():
@@ -116,8 +110,6 @@ if __name__ == "__main__":
                 for element in updatelist:
                     if isinstance(element, Button):
                         element.mouse_clicked(mousepos)
-
-        
 
         mainscreen.fill((125,125,125))
         for element in updatelist:
