@@ -3,11 +3,17 @@
 
 
 import pygame, sys
-import constants as CST
+
 
 
 
 class Scene:
+    # Scenes list
+    GAMEMENU = 0
+    GAMELEVEL = 1
+    GAMEEND = 2
+    GAMECREDITS = 3
+    
     def __init__(self, GAME_WINDOW: pygame.Surface) -> None:
         """ Inizalization phase, always call the super().__init__ at the beginning of an overridden __init__ """
         self.GAME_WINDOW = GAME_WINDOW
@@ -59,7 +65,7 @@ class Scene:
         # Main game loop
         while self.looping_active:
 
-            delta = gameclock.tick(CST.FPS)
+            delta = gameclock.tick(60)
 
             for event in pygame.event.get():
                 self.event_checking(event)
