@@ -2,7 +2,7 @@
 
 
 import pygame
-import constants as CST
+from AssetLoader import AssetLoader
 from master_class_scene import Scene
 from master_class_button import Button
 from master_class_text import StaticText
@@ -15,9 +15,12 @@ class GameEnd(Scene):
 	def __init__(self, GAME_WINDOW: pygame.Surface) -> None:
 		super().__init__(GAME_WINDOW)
 
+		self.VICTORY_SOUND = AssetLoader.load_audio_sfx("Ta-da-sound.ogg")
+
     	# Scene Elements
-		HALF_SCREEN = CST.SCREEN_WIDTH//2
-		ONETHIRD_SCREEN = CST.SCREEN_WIDTH//3
+		SCREEN_WIDTH, SCREEN_HEIGHT = GAME_WINDOW.get_size()
+		HALF_SCREEN = SCREEN_WIDTH//2
+		ONETHIRD_SCREEN = SCREEN_WIDTH//3
 		FIRST_ROW = 100
 		SECOND_ROW = 300
 		THIRD_ROW = 400
@@ -28,26 +31,21 @@ class GameEnd(Scene):
 			"minus_button": (ONETHIRD_SCREEN-25, THIRD_ROW-25, 50, 50),
 			"b_value": (HALF_SCREEN, THIRD_ROW),
 			"plus_button": (ONETHIRD_SCREEN*2-25, THIRD_ROW-25, 50, 50),
-			"start_button": (HALF_SCREEN-ONETHIRD_SCREEN//2, FOURTH_ROW, ONETHIRD_SCREEN, ONETHIRD_SCREEN//4),
-			"quit_button": (),
+			"menu_button": (HALF_SCREEN-ONETHIRD_SCREEN//2, FOURTH_ROW, ONETHIRD_SCREEN, ONETHIRD_SCREEN//4),
 		}
 
-		self.VICTORY_SOUND = CST.VICTORY_SOUND
-		self.BOARD_SIZES = list(CST.BOARD_SIZE.keys())
-		self.board_size_index = 0
-		self.next_scene_params = {"next_scene": CST.SCENES.GAMEMENU,}
 		background = bg.Background()
 		big_title = StaticText("You did it!", 64, GRID["title"], alignment=StaticText.CENTER)
 		time_taken_label = StaticText("...and it only took", 32, GRID["b_size_label"], alignment=StaticText.CENTER)
 		self.time_played_label = StaticText("Nope", 64, GRID["b_value"], alignment=StaticText.CENTER)
-		start_button = Button("Menu", CST.BUTTON_STYLE, GRID["start_button"], self.button_start)
+		menu_button = Button("Menu", GRID["menu_button"], self.button_menu)
 
     	# Append order is draw order
 		self.updatelist.append(background)
 		self.updatelist.append(big_title)
 		self.updatelist.append(time_taken_label)
 		self.updatelist.append(self.time_played_label)
-		self.updatelist.append(start_button)
+		self.updatelist.append(menu_button)
 
 
 	def event_checking(self, this_event: pygame.event) -> None:
@@ -79,12 +77,11 @@ class GameEnd(Scene):
 
 
 	# Buttons methods
-	def button_start(self):
-		new_next_scene_params = {
-			"next_scene": CST.SCENES.GAMEMENU,
-			"total_cards": self.BOARD_SIZES[self.board_size_index],
+	def button_menu(self):
+		next_scene_params = {
+			"next_scene": Scene.GAMEMENU,
 		}
-		self.quit_loop(new_next_scene_params)
+		self.quit_loop(next_scene_params)
 
 
 
@@ -101,7 +98,8 @@ class GameEnd(Scene):
 # TESTING
 if __name__ == "__main__":
 
-	test_end = GameEnd(CST.MAINSCREEN)
+	mainscreen = pygame.display.set_mode((768, 768))
+	test_end = GameEnd(mainscreen)
 
 	next_scene_params = {"next_scene": 0, "time_played": 150.6}
 	next_scene_params = test_end.run(next_scene_params)
