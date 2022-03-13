@@ -3,21 +3,23 @@
 
 import pygame, sys
 sys.path.append("src")
-from src import constants as CST
 from src import mp_scene_menu
 from src import mp_scene_level
 from src import mp_scene_end
 from src import mp_scene_credits
 
 
-pygame.init()
+
+
 
 
 
 def main_game():
+    pygame.init()
 
-    GAMEWINDOW = CST.MAINSCREEN
+    GAMEWINDOW = pygame.display.set_mode((768, 768))
     pygame.display.set_caption("Memory Puzzle")
+
 
     # Scene initialization
     gamemenu = mp_scene_menu.GameMenu(GAMEWINDOW)

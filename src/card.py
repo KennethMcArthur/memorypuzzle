@@ -1,16 +1,36 @@
 # MEMORY PUZZLE: CARD OBJECT
 
 import pygame
-import constants as CST
+from AssetLoader import AssetLoader
 
 
 
-class Card:
+class Card(AssetLoader):
+
+    CARD_COLORS = (
+        pygame.Color("#FF0000"), # red
+        pygame.Color("#DEFF0A"), # yellow
+        pygame.Color("#0AFF58"), # green
+        pygame.Color("#147DF5"), # blue
+        pygame.Color("#FFFFFF"), # white
+        pygame.Color("#BE0AFF"), # light purple
+        pygame.Color("#FF8700"), # orange
+    )
+
+    @staticmethod
+    def generate_constants():
+        """ Call this before creating cards, assets cannot be loaded without display """
+        Card._EVERY_SHAPE = AssetLoader.load_image("shapemask.png", transparency=True)
+        Card.SHAPELIST = AssetLoader.get_card_shapes(Card._EVERY_SHAPE)
+        Card.CARD_BACK = AssetLoader.load_image("MemoryCardBack.png", transparency=True)
+        Card.CARD_FLIP_SOUND = AssetLoader.load_audio_sfx("Card-flip-sound-effect.ogg")
+        Card.MAX_PAIRS_ALLOWED = len(Card.SHAPELIST) * len(Card.CARD_COLORS)
+        
+
     def __init__(self, coords: tuple,
                 width: int,
                 shape_sprite: pygame.Surface,
-                card_color: pygame.Color,
-                card_back: pygame.Surface) -> None:
+                card_color: pygame.Color) -> None:
         """ Defines a card object """
 
         self.width = width # We assume cards are regular squares
@@ -21,8 +41,7 @@ class Card:
         self.card_color = card_color
         self.card_shape = shape_sprite
         self.card_face = pygame.transform.scale(shape_sprite, (self.width, self.width))
-        self.card_back = pygame.transform.scale(card_back, (self.width, self.width))
-        self.flip_sound = CST.CARD_FLIP_SOUND
+        self.card_back = pygame.transform.scale(Card.CARD_BACK, (self.width, self.width))
 
         self.animation_counter = 0 # 0 face down card, self.width*2 face up card
         self.animation_speed = self.width // 10
@@ -49,7 +68,7 @@ class Card:
             self.increment = self.animation_speed
         elif self.animation_counter >= self.width * 2: # Card is face up
             self.increment = -self.animation_speed
-        self.flip_sound.play()
+        Card.CARD_FLIP_SOUND.play()
 
 
     def is_selectable(self) -> bool:
@@ -127,24 +146,24 @@ class Card:
 # LOCAL TESTING
 def main_tests():
 
-    import constants as CST
     import sys
 
     pygame.init()
 
-    mainscreen = CST.MAINSCREEN
+    mainscreen = pygame.display.set_mode((768, 768))
     gameclock = pygame.time.Clock()
     looping = True
 
-    a_color = CST.COLOR.CARDCOLORS[0]
+    Card.generate_constants()
+    a_color = Card.CARD_COLORS[0]
 
-    dummycard = Card((200,200), 64, CST.SHAPELIST[4], a_color, CST.CARD_BACK)
-    dummybigcard = Card((64, 64), 128, CST.SHAPELIST[4], a_color, CST.CARD_BACK)
+    dummycard = Card((200,200), 64, Card.SHAPELIST[4], a_color)
+    dummybigcard = Card((64, 64), 128, Card.SHAPELIST[4], a_color)
 
     print("The two cards have the same color and shape: ", dummybigcard == dummycard)
 
     while looping:
-        delta = gameclock.tick(CST.FPS)
+        delta = gameclock.tick(60) # fps
         mousepos = None
 
         for event in pygame.event.get():

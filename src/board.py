@@ -3,7 +3,6 @@
 
 import pygame
 from random import sample
-import constants as CST
 from card import Card
 
 
@@ -22,9 +21,10 @@ def get_combinations(total_cards: int, colors_db: list, shape_db: list) -> list:
     return sample(total_comb, total_card_pairs) * 2
         
 
-def _get_origin_point(card_size: int, rows: int, row_length: int, padding: int) -> tuple:
+def _get_origin_point(screen: tuple, card_size: int, rows: int, row_length: int, padding: int) -> tuple:
     """ Generates the coordinates of the first card on the board """
-    screen_center = (CST.SCREEN_WIDTH//2, CST.SCREEN_HEIGHT//2)
+    SCREEN_WIDTH, SCREEN_HEIGHT = screen
+    screen_center = (SCREEN_WIDTH//2, SCREEN_HEIGHT//2)
     board_width = card_size * row_length + padding * (row_length - 1)
     board_height = card_size * rows + padding * (rows - 1)
 
@@ -47,17 +47,18 @@ def _get_cards_coords(origin_point: tuple, card_size: int, rows: int, row_length
     return coords_list
 
 
-def generate_cards_on_board(rows: int, row_length: int, padding: int, seed_color_pairs: list) -> list:
+def generate_cards_on_board(screen: tuple, rows: int, row_length: int, padding: int, seed_color_pairs: list) -> list:
     """ Places each cards at their coordinates """
+    SCREEN_WIDTH, SCREEN_HEIGHT = screen
     factor = max(row_length, rows)
-    card_size = (CST.SCREEN_HEIGHT - padding * (factor + 1)) // factor
-    origin_point = _get_origin_point(card_size, rows, row_length, padding)
+    card_size = (SCREEN_HEIGHT - padding * (factor + 1)) // factor
+    origin_point = _get_origin_point(screen, card_size, rows, row_length, padding)
     coords_list = _get_cards_coords(origin_point, card_size, rows, row_length, padding)
     
     # Placing cards in the output list
     final_card_list = []
     for i, pos in enumerate(coords_list):
-        final_card_list.append(Card(pos, card_size, *seed_color_pairs[i], CST.CARD_BACK))
+        final_card_list.append(Card(pos, card_size, *seed_color_pairs[i]))
     
     return final_card_list
 
@@ -71,11 +72,45 @@ def card_clicked_at(coords: tuple, card_list: list) -> Card:
     return None
         
 
+def get_optimal_row_length(total_cards: int) -> int:
+    """ Returns the optimal length of a board row based on total card pool
+        Raises ValueError if total_cards is not valid """
+
+    if total_cards % 2 != 0:
+        raise ValueError("Odd numbers are not allowed.")
+
+    possible_rows_number = (num for num in range(2, total_cards) if total_cards % num == 0)
+
+    optimal_row_length = 2 # let's avoid single-carded rows
+    for rows in possible_rows_number:
+        row_length = total_cards // rows
+        if rows <= row_length:
+            optimal_row_length = row_length
+
+    # Final validation before allowing the value
+    # we avoid few looong rows in favor of a more "squarey" board
+    rows = total_cards // optimal_row_length
+    delta = optimal_row_length - rows
+    if delta > rows:
+        raise ValueError("Not equally divisible.")
+
+    return optimal_row_length
 
 
+def get_possible_board_sizes() -> list:
+    """ Returns every possible sizes of a board based on total cards allowed """
+    board_sizes = []
+    Card.generate_constants() # pygame needs a display before loading assets
+    total_cards = Card.MAX_PAIRS_ALLOWED
 
-
-
+    for num in range(2, total_cards+1): # 2 is the minimum board size
+        try:
+            get_optimal_row_length(num)
+        except ValueError:
+            continue
+        board_sizes.append(num)
+    
+    return board_sizes
 
 
 
@@ -87,18 +122,20 @@ if __name__ == "__main__":
     import random
 
     pygame.init()
+    pygame.mixer.init()
 
-    mainscreen = CST.MAINSCREEN
+    mainscreen = pygame.display.set_mode((768, 768))
     gameclock = pygame.time.Clock()
     looping = True
 
-
+    Card.generate_constants()
     total_cards = 42
-    board_row_length, padding = CST.BOARD_SIZE.get(total_cards)
+    board_row_length = get_optimal_row_length(total_cards)
+    padding = 10
     board_row_number = total_cards // board_row_length
-    seed_color_pairs = get_combinations(total_cards, CST.COLOR.CARDCOLORS, CST.SHAPELIST)
+    seed_color_pairs = get_combinations(total_cards, Card.CARD_COLORS, Card.SHAPELIST)
     random.shuffle(seed_color_pairs)
-    card_list = generate_cards_on_board(board_row_number, board_row_length, padding, seed_color_pairs)
+    card_list = generate_cards_on_board(mainscreen.get_size(), board_row_number, board_row_length, padding, seed_color_pairs)
 
 
     selected_cards = []
@@ -106,7 +143,7 @@ if __name__ == "__main__":
     got_wrong_pair = False
 
     while looping:
-        delta = gameclock.tick(CST.FPS)
+        delta = gameclock.tick(60)
         mousepos = pygame.mouse.get_pos()
 
         if got_wrong_pair:

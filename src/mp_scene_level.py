@@ -5,10 +5,10 @@
 import pygame
 import random
 import time
-import constants as CST
 import board
 from master_class_scene import Scene
 from master_class_button import Button
+from card import Card
 import mp_background as bg
 
 
@@ -20,9 +20,11 @@ class Gamelevel(Scene):
 	def __init__(self, GAME_WINDOW: pygame.Surface) -> None:
 		super().__init__(GAME_WINDOW)
 
+		self.SCREEN_SIZE = GAME_WINDOW.get_size()
+		Card.generate_constants()
+
     	# Scene Elements
 		self.background = bg.Background()
-		self.next_scene_params = {"next_scene": CST.SCENES.GAMEMENU,}
 
     	# Append order is draw order
 		self.updatelist.append(self.background)
@@ -35,14 +37,14 @@ class Gamelevel(Scene):
 			raise KeyError("Missing key parameter")
 
 		total_cards = params["total_cards"]
-		board_row_length = CST.BOARD_SIZE.get(total_cards)
+		board_row_length = board.get_optimal_row_length(total_cards)
 		padding = 10
 		board_rows = total_cards // board_row_length
-		seed_color_pairs = board.get_combinations(total_cards, CST.COLOR.CARDCOLORS, CST.SHAPELIST)
+		seed_color_pairs = board.get_combinations(total_cards, Card.CARD_COLORS, Card.SHAPELIST)
 		random.shuffle(seed_color_pairs)
 		self.pairs_left = total_cards // 2
 		self.play_timer = time.time()
-		self.card_list = board.generate_cards_on_board(board_rows, board_row_length, padding, seed_color_pairs)
+		self.card_list = board.generate_cards_on_board(self.SCREEN_SIZE, board_rows, board_row_length, padding, seed_color_pairs)
 		self.updatelist.extend(self.card_list)
 
 
@@ -66,7 +68,7 @@ class Gamelevel(Scene):
 		# Main game loop
 		while self.looping_active:
 
-			delta = gameclock.tick(CST.FPS)
+			delta = gameclock.tick(60)
 			mousepos = pygame.mouse.get_pos()
 
 			if got_wrong_pair:
@@ -114,7 +116,7 @@ class Gamelevel(Scene):
 				# Basically victory
 				time_played = time.time() - self.play_timer
 				pygame.time.wait(1000)
-				next_scene_params = {"next_scene": CST.SCENES.GAMEEND, "time_played": time_played}
+				next_scene_params = {"next_scene": Scene.GAMEEND, "time_played": time_played}
 				self.quit_loop(next_scene_params)
                 
 		self.reset_state()
@@ -132,7 +134,8 @@ class Gamelevel(Scene):
 # TESTING
 if __name__ == "__main__":
 
-	test_menu = Gamelevel(CST.MAINSCREEN)
+	mainscreen = pygame.display.set_mode((768, 768))
+	test_menu = Gamelevel(mainscreen)
 
 	next_scene_params = {"next_scene": 0, "total_cards": 16}
 	next_scene_params = test_menu.run(next_scene_params)
