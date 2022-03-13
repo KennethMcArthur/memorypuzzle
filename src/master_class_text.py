@@ -2,12 +2,14 @@
 # This class implements the basic methods for displaying text
 
 import pygame
-import constants as CST
+from AssetLoader import AssetLoader
 
 
 
-class StaticText:
+class StaticText(AssetLoader):
     """ Class for text """
+    COLOR = pygame.Color("#E9C46A")
+    FONT = AssetLoader.load_font("kongtext.ttf")
     # Alignment Constants
     LEFT = 0
     CENTER = 1
@@ -16,13 +18,13 @@ class StaticText:
     def __init__(self, text: str, size: int, position: tuple, alignment: int = 0) -> None:
         self.alignment = alignment # Default is left
         self.pos_x, self.pos_y = position
-        self.titlefont = pygame.font.Font(CST.TITLE_FONT, size)
+        self.titlefont = pygame.font.Font(StaticText.FONT, size)
         self.set_text(text)
 
 
     def set_text(self, new_text: str) -> None:
         """ Updates the text """
-        self.titletext = self.titlefont.render(new_text, True, CST.TEXT_COLOR)
+        self.titletext = self.titlefont.render(new_text, True, StaticText.COLOR)
         self.place_text()
 
 
@@ -57,27 +59,23 @@ if __name__ == "__main__":
 
     pygame.init()
 
-    mainscreen = CST.MAINSCREEN
+    mainscreen = pygame.display.set_mode((768, 768))
     gameclock = pygame.time.Clock()
     looping = True
 
     dummytext = StaticText("This is a test", 48, (100,100))
 
     while looping:
-        delta = gameclock.tick(CST.FPS)
+        delta = gameclock.tick(60)
         mousepos = pygame.mouse.get_pos()
-
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 looping = False
 
-
-
         mainscreen.fill((125,125,125))
         dummytext.game_tick_update(mainscreen, mousepos, delta)
         pygame.display.update()
-
 
     pygame.quit()
     sys.exit()
