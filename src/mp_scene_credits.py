@@ -2,7 +2,6 @@
 
 
 import pygame
-import constants as CST
 from master_class_scene import Scene
 from master_class_button import Button
 from master_class_text import StaticText
@@ -15,10 +14,12 @@ class GameCredits(Scene):
 	def __init__(self, GAME_WINDOW: pygame.Surface) -> None:
 		super().__init__(GAME_WINDOW)
 
+		SCREEN_WIDTH, SCREEN_HEIGHT = GAME_WINDOW.get_size()
+
     	# Scene Elements
-		HALF_SCREEN = CST.SCREEN_WIDTH//2
-		ONETHIRD_SCREEN = CST.SCREEN_WIDTH//3
-		VERTICAL_GRID_UNIT = CST.SCREEN_HEIGHT // 20
+		HALF_SCREEN = SCREEN_WIDTH//2
+		ONETHIRD_SCREEN = SCREEN_WIDTH//3
+		VERTICAL_GRID_UNIT = SCREEN_HEIGHT // 20
 		TEXTSIZE_SMALL = 14
 		TEXTSIZE_BIG = 20
 		TEXTSIZE_TITLE = 80
@@ -43,9 +44,6 @@ class GameCredits(Scene):
 			"menu_button": (HALF_SCREEN-ONETHIRD_SCREEN//2, MENU_BUTTON_ROW, ONETHIRD_SCREEN, ONETHIRD_SCREEN//4),
 		}
 
-		self.BOARD_SIZES = list(CST.BOARD_SIZE.keys())
-		self.board_size_index = 0
-		self.next_scene_params = {"next_scene": CST.SCENES.GAMEMENU,}
 		background = bg.Background()
 		big_title = StaticText("Credits", TEXTSIZE_TITLE, GRID["title"], StaticText.CENTER)
 		g_a_title = StaticText("< Game and Art >", TEXTSIZE_BIG, GRID["g_a_title"], StaticText.CENTER)
@@ -55,7 +53,7 @@ class GameCredits(Scene):
 		font_credit2 = StaticText("www.zone38.net", TEXTSIZE_SMALL, GRID["font_credit_2"], StaticText.CENTER)
 		sound_title = StaticText("< Sound >", TEXTSIZE_BIG, GRID["sound_title"], StaticText.CENTER)
 		sound_credit = StaticText("notification-sounds.com", TEXTSIZE_SMALL, GRID["sound_credit"], StaticText.CENTER)
-		menu_button = Button("Menu", CST.BUTTON_STYLE, GRID["menu_button"], self.button_menu)
+		menu_button = Button("Menu", GRID["menu_button"], self.button_menu)
 
     	# Append order is draw order
 		self.updatelist.append(background)
@@ -83,10 +81,10 @@ class GameCredits(Scene):
 
 	# Buttons methods
 	def button_menu(self):
-		new_next_scene_params = {
-			"next_scene": CST.SCENES.GAMEMENU,
+		next_scene_params = {
+			"next_scene": Scene.GAMEMENU,
 		}
-		self.quit_loop(new_next_scene_params)
+		self.quit_loop(next_scene_params)
 
 
 
@@ -99,7 +97,8 @@ class GameCredits(Scene):
 # TESTING
 if __name__ == "__main__":
 
-	test_creds = GameCredits(CST.MAINSCREEN)
+	mainscreen = pygame.display.set_mode((768, 768))
+	test_creds = GameCredits(mainscreen)
 
 	next_scene_params = {"next_scene": 0,}
 	next_scene_params = test_creds.run(next_scene_params)
